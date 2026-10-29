@@ -5,15 +5,17 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Letterboxd Extras - Settings</title>
+    <title>Letterboxd: Director's Cut - Settings</title>
     
     <link rel="stylesheet" href="options.css">
     <link rel="stylesheet" href="colour_scheme.css">
+    <link rel="stylesheet" href="plus/options-plus.css">
     <link rel="icon" type="image/png" href="icon128.png">
 </head>
 
 <body>
     <section class="topnav">
+        <p class="nav-item" sectionId="directors-cut">Director's Cut</p>
         <p class="nav-item" sectionId="ratings">Ratings</p>
         <p class="nav-item" sectionId="spines">Spines</p>
         <p class="nav-item" sectionId="reorder">Reorder</p>
@@ -36,6 +38,55 @@
         </div>
         <hr width="100%">
     </div>
+
+    <!-- Director's Cut (src/plus/) -->
+    <div id="directors-cut">
+        <h3>Director's Cut</h3>
+        <div>
+            <h4>Extras carousel</h4>
+            <div>
+                <label for="dc-extras-enabled">Show trailers, featurettes and more:</label>
+                <input type="checkbox" id="dc-extras-enabled" subid="dc-extras-div" class="setting"/>
+            </div>
+            <div id="dc-extras-div" class="subsetting">
+                <div>
+                    <label for="dc-extras-unofficial">Include unofficial videos:</label>
+                    <input type="checkbox" id="dc-extras-unofficial" class="setting"/>
+                </div>
+            </div>
+            <p class="info-tip">Videos from TMDB, shown above Activity from Friends. Official videos only unless you turn on unofficial ones.</p>
+        </div>
+        <div>
+            <h4>Photos</h4>
+            <div>
+                <label for="dc-photos-enabled">Stills and posters on film pages:</label>
+                <input type="checkbox" id="dc-photos-enabled" class="setting"/>
+            </div>
+            <div>
+                <label for="dc-photos-cast-hover">Faces when hovering cast names:</label>
+                <input type="checkbox" id="dc-photos-cast-hover" class="setting"/>
+            </div>
+            <div>
+                <label for="dc-photos-person">Photo galleries on cast and crew pages:</label>
+                <input type="checkbox" id="dc-photos-person" class="setting"/>
+            </div>
+            <div>
+                <label for="dc-photos-search">Photos in search results:</label>
+                <input type="checkbox" id="dc-photos-search" class="setting"/>
+            </div>
+            <p class="info-tip">From Letterboxd Photos by Enes Köse. Images from TMDB.</p>
+        </div>
+        <div>
+            <h4>Common Sense Media</h4>
+            <div>
+                <label for="dc-commonsense-enabled">Age rating and parents guide link:</label>
+                <input type="checkbox" id="dc-commonsense-enabled" class="setting"/>
+            </div>
+            <p class="info-tip">A link in the ratings sidebar. Common Sense doesn't allow showing its ratings on other sites, so this opens their page.</p>
+        </div>
+    </div>
+
+    <hr width="100%">
 
     <!-- Ratings -->
     <div id="ratings">
@@ -620,6 +671,7 @@
     <hr width="100%">
 
     <script src="options.js"></script>
+    <script src="plus/options-plus.js"></script>
 </body>
 
 </html>

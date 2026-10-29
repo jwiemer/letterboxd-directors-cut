@@ -1,0 +1,215 @@
+/* Director's Cut: settings page restyle.
+   Loaded after Letterboxd Extras' options.css and colour_scheme.css, so it only overrides;
+   the HTML structure and options.js stay as upstream wrote them.
+   Layout: sidebar nav on wide screens, sticky top bar on narrow screens and in the toolbar popup. */
+
+/* --- Letterboxd dark theme (always dark, like letterboxd.com) --- */
+html body {
+	--body-text-color: #def;
+	--body-back-color: #14181c;
+	--body-text-alt-color: #9ab;
+	--body-text-alt2-color: #14181c;
+	--border-color: #2c3440;
+	--background-color-canvas: #1c2228;
+	--color-accent-primary: #00e054;
+	--color-accent-primary-hover: #00c048;
+	--box-shadow-level-1: none;
+	--dc-surface: #2c3440;
+	--dc-surface-hover: #384250;
+	--dc-green: #00e054;
+	--dc-sidebar: 220px;
+
+	margin: 0;
+	padding: 0 16px 40px;
+	background: var(--body-back-color);
+	color: var(--body-text-alt-color);
+	font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Graphik", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	color-scheme: dark;
+}
+
+h3 {
+	margin: 32px 0 12px;
+	color: #fff;
+	font-size: 20px;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+}
+h4 {
+	margin: 20px 0 6px;
+	color: var(--body-text-color);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+hr { border: 0; border-top: 1px solid var(--border-color); width: 100%; margin: 24px 0 0; }
+a, .hyperlink { color: #40bcf4; }
+a:hover { opacity: 1; color: #fff; }
+p.info-tip { max-width: 560px; color: #678; font-size: 12px; font-style: normal; }
+
+/* --- Setting rows: label left, control right --- */
+div:has(> label:not(.radio) + .setting),
+div:has(> label:not(.radio) + input[type="button"]) {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	max-width: 560px;
+	min-height: 40px;
+	border-bottom: 1px solid #1c2228;
+}
+label:not(.radio) { width: auto; margin: 0; color: var(--body-text-color); }
+div.subsetting { box-sizing: border-box; max-width: 560px; margin-left: 0; padding-left: 16px; border-left: 2px solid var(--border-color); }
+div.subsetting div:has(> label:not(.radio) + .setting) { max-width: none; }
+
+/* --- Toggle switches instead of checkboxes --- */
+input[type="checkbox"] {
+	appearance: none;
+	flex: none;
+	position: relative;
+	width: 38px;
+	height: 22px;
+	margin: 0;
+	border-radius: 999px;
+	background: #456;
+	cursor: pointer;
+	transition: background 0.15s;
+}
+input[type="checkbox"]::after {
+	content: "";
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	background: #fff;
+	transition: transform 0.15s;
+}
+input[type="checkbox"]:checked { background: var(--dc-green); }
+input[type="checkbox"]:checked::after { transform: translateX(16px); }
+input:focus-visible, select:focus-visible, button:focus-visible, .nav-item:focus-visible {
+	outline: 2px solid var(--dc-green);
+	outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+	input[type="checkbox"], input[type="checkbox"]::after { transition: none; }
+}
+
+/* --- Selects, text fields, buttons --- */
+select, input[type="text"], input[type="number"] {
+	min-height: 32px;
+	padding: 4px 10px;
+	border: 1px solid var(--border-color);
+	border-radius: 4px;
+	background: var(--dc-surface);
+	color: var(--body-text-color);
+	font: inherit;
+}
+input[type="text"] { min-width: 180px; }
+input[type="button"], input[type="file"]::file-selector-button, button {
+	min-height: 32px;
+	padding: 4px 14px;
+	border: 0;
+	border-radius: 4px;
+	background: var(--dc-surface);
+	color: var(--body-text-color);
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}
+input[type="button"]:hover, button:hover { background: var(--dc-surface-hover); color: #fff; }
+#requestall, .request-permission { background: #ff8000; color: #14181c; }
+.div-request-permission label { color: #ff8000 !important; }
+
+/* --- Ratings order list --- */
+.sortable-list { box-shadow: none; border-radius: 4px; }
+.sortable-item { background: var(--dc-surface); color: var(--body-text-color); box-shadow: none; }
+
+/* --- Navigation: sticky top bar (default, narrow, popup) --- */
+.topnav, body:not(.android) .topnav {
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 4px;
+	margin: 0 -16px;
+	padding: 8px 16px;
+	overflow-x: auto;
+	scrollbar-width: none;
+	background: rgba(20, 24, 28, 0.95);
+	border-bottom: 1px solid var(--border-color);
+	box-shadow: none;
+	backdrop-filter: blur(6px);
+}
+.topnav::-webkit-scrollbar { display: none; }
+.topnav p {
+	flex: none;
+	margin: 0;
+	padding: 6px 12px;
+	border-radius: 999px;
+	color: var(--body-text-alt-color);
+	font-size: 13px;
+	white-space: nowrap;
+}
+.topnav p:hover { background: var(--dc-surface); color: #fff; }
+.topnav p[aria-current="true"] { background: var(--body-text-color); color: #14181c; }
+
+/* Settings search */
+.dc-search {
+	flex: 1 0 160px;
+	order: -1;
+	min-height: 32px;
+	padding: 4px 12px;
+	border: 1px solid var(--border-color);
+	border-radius: 999px;
+	background: var(--dc-surface);
+	color: #fff;
+	font: inherit;
+	font-size: 13px;
+}
+.dc-search::placeholder { color: #789; }
+.dc-no-results { display: none; margin: 32px 0; color: #789; }
+body.dc-searching .dc-no-results.dc-show { display: block; }
+.dc-hidden { display: none !important; }
+body.dc-searching hr { display: none; }
+mark.dc-mark { background: rgba(0, 224, 84, 0.25); color: inherit; border-radius: 2px; }
+
+/* --- Wide screens (full settings tab): left sidebar --- */
+@media (min-width: 820px) {
+	body:not(.popup) {
+		padding-left: calc(var(--dc-sidebar) + 40px);
+		padding-right: 40px;
+	}
+	body:not(.popup) .topnav {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		width: var(--dc-sidebar);
+		margin: 0;
+		padding: 24px 12px;
+		flex-direction: column;
+		overflow-y: auto;
+		border-bottom: 0;
+		border-right: 1px solid var(--border-color);
+		background: #1c2228;
+	}
+	body:not(.popup) .topnav p { text-align: left; border-radius: 4px; }
+	body:not(.popup) .topnav::before {
+		content: "Director's Cut";
+		display: block;
+		margin: 0 12px 16px;
+		color: #fff;
+		font-size: 16px;
+		font-weight: 700;
+	}
+	body:not(.popup) .dc-search { flex: none; order: 0; margin-bottom: 12px; }
+	html { scroll-padding-top: 24px; }
+}
+
+/* --- Phones: full-width rows, bigger touch targets --- */
+@media (max-width: 600px) {
+	html body { font-size: 15px; }
+	div:has(> label:not(.radio) + .setting) { min-height: 48px; }
+	label:not(.radio) { flex: 1; }
+	input[type="text"] { min-width: 0; flex: 1; }
+}

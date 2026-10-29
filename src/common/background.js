@@ -230,6 +230,16 @@ async function InitDefaultSettings() {
         options['ddd-api-enabled'] = options['ddd-apikey'] != '';
     }
 
+    // Director's Cut defaults (keep in sync with DEFAULTS in plus/dc-core.js)
+    const directorsCutDefaults = {
+        'dc-extras-enabled': true, 'dc-extras-unofficial': false,
+        'dc-photos-enabled': true, 'dc-photos-cast-hover': true, 'dc-photos-person': true, 'dc-photos-search': true,
+        'dc-commonsense-enabled': true,
+    };
+    for (const [key, value] of Object.entries(directorsCutDefaults)) {
+        if (options[key] == null) options[key] = value;
+    }
+
     // Save
     await browser.storage.sync.set({ options });
 }
