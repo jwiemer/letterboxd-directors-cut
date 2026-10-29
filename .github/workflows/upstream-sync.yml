@@ -1,0 +1,60 @@
+# Director's Cut: once a month (first Tuesday, never on Shabbat), check Letterboxd Extras (upstream) for new commits.
+# If there are any, merge them into a branch and open a pull request into directors-cut.
+# Never merges on its own. On a merge conflict it opens an issue instead.
+name: Upstream sync
+
+on:
+  schedule:
+    - cron: "17 15 * * 2" # every Tuesday 15:17 UTC (morning in Chicago); the job skips all but the first
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: First Tuesday only
+        if: github.event_name == 'schedule'
+        run: |
+          if [ "$(date -u +%d)" -gt 7 ]; then echo "SKIP=1" >> "$GITHUB_ENV"; fi
+
+      - uses: actions/checkout@v4
+        if: env.SKIP != '1'
+        with:
+          ref: directors-cut
+          fetch-depth: 0
+
+      - name: Fetch upstream
+        if: env.SKIP != '1'
+        run: |
+          git remote add upstream https://github.com/duncanlang/Letterboxd-Extras.git
+          git fetch upstream main
+          echo "NEW_COMMITS=$(git rev-list --count HEAD..upstream/main)" >> "$GITHUB_ENV"
+
+      - name: Merge into a sync branch and open a PR
+        if: env.SKIP != '1' && env.NEW_COMMITS != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          BRANCH="sync/upstream-$(date +%Y-%m-%d)"
+          git checkout -b "$BRANCH"
+          if git merge --no-edit upstream/main; then
+            git push origin "$BRANCH"
+            gh pr create --base directors-cut --head "$BRANCH" \
+              --title "Sync with Letterboxd Extras ($NEW_COMMITS new commits)" \
+              --body "Upstream has $NEW_COMMITS new commits. Merged cleanly into this branch. Build and check a film page before merging."
+          else
+            git merge --abort
+            gh issue create --title "Upstream sync needs a hand ($(date +%Y-%m-%d))" \
+              --body "Letterboxd Extras has $NEW_COMMITS new commits, but they conflict with Director's Cut changes. Merge upstream/main into directors-cut locally and resolve."
+          fi
+
+      - name: Nothing new
+        if: env.SKIP != '1' && env.NEW_COMMITS == '0'
+        run: echo "Up to date with upstream."

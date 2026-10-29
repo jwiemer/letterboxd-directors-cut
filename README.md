@@ -1,3 +1,40 @@
+# Letterboxd: Director's Cut
+
+A fork of [Letterboxd Extras](https://github.com/duncanlang/Letterboxd-Extras) by Duncan Lang, with a few extra features for [Letterboxd](https://letterboxd.com/) film pages. Everything in Letterboxd Extras still works: ratings from other sites, the Wikipedia button, box office, and the rest. Unofficial and unlisted; personal project.
+
+## What it adds
+- **Extras carousel:** trailers, teasers, featurettes, behind the scenes, clips and bloopers from [TMDB](https://www.themoviedb.org/), with tabs by type. Click a video to play it in a larger player. Official videos only, unless you turn on unofficial ones in settings. Sits above *Activity from Friends* (or above reviews when you're logged out).
+- **Photos:** stills and posters on film pages, a full-screen gallery, photo galleries on cast and crew pages, faces when you hover cast names, and photos in search results. Merged from [Letterboxd Photos](https://github.com/Asoronite/Letterboxd_Photos) by Enes Köse.
+- **Common Sense Media:** a link to the film's age rating and parents guide, in the ratings sidebar. It's a link only: Common Sense's terms don't allow showing their ratings on other sites.
+- **A new settings page:** dark theme to match Letterboxd, toggle switches, a sidebar, and search across all settings. Works in the toolbar popup and on narrow screens.
+
+Videos and photos come through a small proxy that holds the TMDB key, so you don't need your own.
+
+## Install (Chrome)
+1. Download the latest `directors-cut-chrome-*.zip` from [Releases](https://github.com/jwiemer/letterboxd-directors-cut/releases) and unzip it.
+2. Go to `chrome://extensions` and turn on **Developer mode** (top right).
+3. Click **Load unpacked** and pick the unzipped folder.
+
+If you also have Letterboxd Extras installed, turn it off; this includes everything it does. Firefox: a `directors-cut-firefox-*.zip` is built too, but it isn't tested.
+
+Build it yourself (Mac or Linux): `cd src && npm install && ./build.sh chrome`, then load `src/dist/chrome`.
+
+## Pairs well with
+[Enhancer for Letterboxd](https://chromewebstore.google.com/detail/abkbjnimmidipmhhhlcnikkifjpdjdpc) by [leandcesar](https://github.com/leandcesar): friends' rating histograms, search autocomplete, list filters, a random film picker and more. Its source isn't published, so it isn't merged here; install it alongside.
+
+## Credits
+- [Letterboxd Extras](https://github.com/duncanlang/Letterboxd-Extras) by Duncan Lang and contributors (MIT). This repo is a fork; see `LICENSE`.
+- [Letterboxd Photos](https://github.com/Asoronite/Letterboxd_Photos) by Enes Köse (MIT); license in `src/plus/photos/LICENSE`.
+- Videos and images from [TMDB](https://www.themoviedb.org/). This product uses the TMDB API but is not endorsed or certified by TMDB.
+- Common Sense Media IDs from [Wikidata](https://www.wikidata.org/wiki/Property:P7091).
+- Not affiliated with Letterboxd or Common Sense Media.
+
+Director's Cut code lives in `src/plus/`, so upstream updates merge cleanly. A monthly GitHub Action opens a pull request when Letterboxd Extras has new commits.
+
+***
+
+*The original Letterboxd Extras README follows.*
+
 # Letterboxd-Extras
 
 A browser add-on/extension that adds additional features to the movie tracking database site [Letterboxd](https://letterboxd.com/) including ratings from other sites, box office and budget, and more.
