@@ -5,6 +5,7 @@ let currentIndex = 0;
 let activeTab = "backdrops";
 // Director's Cut: language filter per tab. "default" = your language + No Language; "all"; "xx" = No Language; else an ISO 639-1 code.
 let langFilter = { backdrops: "default", posters: "default" };
+let canSet = false; // Director's Cut: logged in AND Letterboxd lets this member use its poster/backdrop picker (Patron)
 const userLang = (navigator.language || "en").slice(0, 2).toLowerCase();
 let filmData = null;
 let personData = null;
@@ -363,6 +364,10 @@ function buildPanel() {
         </div>
       </div>
 
+      ${canSet && images.length ? `<div class="tmdb-set-row">
+        <span class="lb-set-status" role="status" aria-live="polite"></span>
+        <button class="lb-set tmdb-set" type="button" title="Set the image shown below as your Letterboxd ${activeTab === "posters" ? "poster" : "backdrop"}">Set</button>
+      </div>` : ""}
       ${renderCarousel(images, activeTab === "posters" ? "is-poster" : "")}
     `;
   }
@@ -384,6 +389,14 @@ function buildPanel() {
       currentIndex = 0;
       buildPanel();
     });
+  });
+
+  // Director's Cut: sidebar Set button acts on the image the carousel is showing
+  const setBtn = panel.querySelector(".tmdb-set");
+  setBtn?.addEventListener("click", () => {
+    const url = getActiveImages()[currentIndex];
+    const kind = activeTab === "posters" ? "poster" : "backdrop";
+    setOnLetterboxd(kind, filmData?.meta?.[url]?.filePath, setBtn, panel.querySelector(".tmdb-set-row .lb-set-status"));
   });
 
   // Arrows
@@ -613,12 +626,31 @@ function renderInfoBar(bar, url) {
     <span class="lb-info-item">${info ? `${info.width} × ${info.height}` : ""}</span>
     ${lang ? `<span class="lb-info-item">${lang}</span>` : ""}
     <a class="lb-info-item lb-info-link" href="${toOriginalUrl(url)}" target="_blank" rel="noopener">View original ↗</a>
-    <button class="lb-set" type="button">Set as my Letterboxd ${kind}</button>
-    <span class="lb-set-status" role="status" aria-live="polite"></span>
+    ${canSet ? `<button class="lb-set" type="button">Set as my Letterboxd ${kind}</button>
+    <span class="lb-set-status" role="status" aria-live="polite"></span>` : ""}
   `;
   const button = bar.querySelector(".lb-set");
   const status = bar.querySelector(".lb-set-status");
-  button.addEventListener("click", () => setOnLetterboxd(kind, info?.filePath, button, status));
+  button?.addEventListener("click", () => setOnLetterboxd(kind, info?.filePath, button, status));
+}
+
+// Set buttons only show when you're logged in and Letterboxd's picker answers with options
+// (it refuses logged-out members; Patron is required). Cached for the browser session.
+async function checkCanSet() {
+  const loggedIn = [...document.querySelectorAll("script:not([src])")].some((s) => s.textContent.includes("person.loggedIn = true"));
+  if (!loggedIn) return false;
+  try {
+    const cached = sessionStorage.getItem("dc-can-set");
+    if (cached !== null) return cached === "1";
+  } catch {}
+  const slug = location.pathname.match(/^\/film\/([^/]+)/)?.[1];
+  let allowed = false;
+  try {
+    const res = await fetch(`/film/${slug}/poster-picker/?objectId=`, { credentials: "include" });
+    allowed = res.ok && (await res.text()).includes("data-js-content-media-picker-media-item");
+  } catch {}
+  try { sessionStorage.setItem("dc-can-set", allowed ? "1" : "0"); } catch {}
+  return allowed;
 }
 
 function letterboxdCsrf() {
@@ -934,6 +966,7 @@ async function initFilm() {
   }
 
   filmData = response;
+  canSet = await checkCanSet();
   activeTab = filmData.backdrops.length > 0 ? "backdrops" : "posters";
   currentIndex = 0;
 

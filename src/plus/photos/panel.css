@@ -523,3 +523,8 @@
   width: min(92vw, calc((92vh - 50px - 96px) * 2 / 3));
 }
 .lb-shell.lb-portrait .lb-info .lb-set { margin-left: 0; }
+
+/* Director's Cut: Set button above the sidebar carousel */
+.tmdb-set-row { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin: 0 0 8px; }
+.tmdb-set-row .lb-set { margin-left: 0; padding: 4px 14px; font-size: 13px; }
+.tmdb-set-row .lb-set-status { flex: 1; flex-basis: auto; text-align: left; font-size: 12px; color: #9ab; }
