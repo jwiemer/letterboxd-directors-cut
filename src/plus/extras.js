@@ -1,6 +1,7 @@
 // Director's Cut: "Extras" carousel on film pages.
 // Trailers, featurettes, behind the scenes, clips and bloopers from TMDB (official only by default),
-// with tabs to filter by type. Clicking a video opens it in a modal player.
+// with Letterboxd-style tabs to filter by type. Clicking a video opens a player with prev/next
+// and a strip of every video (with the same tabs) so you can move between videos and categories.
 
 (() => {
 	// --- Tabs: label → TMDB video types it includes (empty tabs are hidden) ---
@@ -40,51 +41,66 @@
 		return index === -1 ? TYPE_ORDER.length : index;
 	}
 
+	const inTab = (tab, video) => !tab.types || tab.types.includes(video.type);
+	const tabsFor = videos => TABS.filter(tab => !tab.types || videos.some(v => tab.types.includes(v.type)));
+
+	// Letterboxd's native tab markup (.content-tab-filters > .tablist > button.trigger), so tabs,
+	// hover and the selected underline look like CAST / CREW / DETAILS
+	function buildTabs(tabs, selectedId, onSelect) {
+		const tablist = DC.el('div', { class: 'tablist', role: 'tablist' });
+		for (const tab of tabs) {
+			tablist.append(DC.el('button', {
+				type: 'button', class: 'trigger', role: 'tab', 'data-tab': tab.id, 'aria-selected': String(tab.id === selectedId),
+				onclick: () => {
+					for (const button of tablist.children) button.setAttribute('aria-selected', String(button.dataset.tab === tab.id));
+					onSelect(tab);
+				},
+			}, [DC.el('span', { class: 'label', text: tab.label })]));
+		}
+		return DC.el('div', { class: 'content-tab-filters -no-divider dc-tab-filters' }, [tablist]);
+	}
+
 	// --- Section: heading, tabs, scrolling row of cards ---
 	function buildSection(videos) {
 		const row = DC.el('ul', { class: 'dc-row', role: 'list' });
-		const tabs = DC.el('div', { class: 'dc-tabs', role: 'tablist', 'aria-label': 'Filter extras' });
 		const arrows = buildArrows(row);
+		const tabs = tabsFor(videos);
+		let current = TABS[0];
 
-		const tabsInUse = TABS.filter(tab => !tab.types || videos.some(v => tab.types.includes(v.type)));
-		for (const tab of tabsInUse) {
-			const count = tab.types ? videos.filter(v => tab.types.includes(v.type)).length : videos.length;
-			const button = DC.el('button', {
-				type: 'button', role: 'tab', class: 'dc-tab', 'data-tab': tab.id, 'aria-selected': String(tab.id === 'all'),
-				onclick: () => selectTab(tab),
-			}, [DC.el('span', { text: tab.label }), DC.el('span', { class: 'dc-tab-count', text: String(count) })]);
-			tabs.append(button);
-		}
-		// One tab besides "All" means the tabs add nothing
-		if (tabsInUse.length <= 2) tabs.hidden = true;
-
-		function selectTab(tab) {
-			for (const button of tabs.children) button.setAttribute('aria-selected', String(button.dataset.tab === tab.id));
-			row.replaceChildren(...videos.filter(v => !tab.types || tab.types.includes(v.type)).map(buildCard));
+		const showTab = tab => {
+			current = tab;
+			const list = videos.filter(v => inTab(tab, v));
+			row.replaceChildren(...list.map((video, i) => buildCard(video, () => openPlayer(videos, tab.id, i))));
 			row.scrollLeft = 0;
 			arrows.update();
-		}
+		};
+		const tabBar = buildTabs(tabs, 'all', showTab);
+		// One tab besides "All" means the tabs add nothing
+		if (tabs.length <= 2) tabBar.hidden = true;
 
 		const section = DC.el('section', { class: 'section dc-extras', 'aria-label': 'Extras' }, [
 			DC.el('h2', { class: 'section-heading', text: 'Extras' }),
-			tabs,
+			tabBar,
 			DC.el('div', { class: 'dc-row-wrap' }, [arrows.left, row, arrows.right]),
 			DC.el('p', { class: 'dc-credit' }, [
 				'Videos via ', DC.el('a', { href: `https://www.themoviedb.org/movie/${DC.filmTmdbId()}/videos`, target: '_blank', rel: 'noopener', text: 'TMDB' }),
 			]),
 		]);
-		selectTab(TABS[0]);
+		showTab(current);
 		return section;
 	}
 
-	function buildCard(video) {
-		const thumb = DC.el('img', {
-			src: `https://i.ytimg.com/vi/${encodeURIComponent(video.key)}/mqdefault.jpg`,
-			alt: '', loading: 'lazy', width: '320', height: '180',
-		});
+	function thumbUrl(video) {
+		return `https://i.ytimg.com/vi/${encodeURIComponent(video.key)}/mqdefault.jpg`;
+	}
+
+	function buildCard(video, onClick) {
 		return DC.el('li', { class: 'dc-card' }, [
-			DC.el('button', { type: 'button', class: 'dc-card-button', 'aria-label': `Play ${video.name}`, onclick: () => openPlayer(video) }, [
-				DC.el('span', { class: 'dc-thumb' }, [thumb, DC.el('span', { class: 'dc-play', 'aria-hidden': 'true' })]),
+			DC.el('button', { type: 'button', class: 'dc-card-button', 'aria-label': `Play ${video.name}`, onclick: onClick }, [
+				DC.el('span', { class: 'dc-thumb' }, [
+					DC.el('img', { src: thumbUrl(video), alt: '', loading: 'lazy', width: '320', height: '180' }),
+					DC.el('span', { class: 'dc-play', 'aria-hidden': 'true' }),
+				]),
 				DC.el('span', { class: 'dc-card-type', text: video.type }),
 				DC.el('span', { class: 'dc-card-title', text: video.name }),
 			]),
@@ -106,33 +122,81 @@
 		return { left, right, update };
 	}
 
-	// --- Modal player (same look as the Photos lightbox) ---
-	function openPlayer(video) {
+	// --- Player modal: video, prev/next, and a filmstrip with category tabs ---
+	function openPlayer(videos, tabId, startIndex) {
 		const lastFocus = document.activeElement;
+		let tab = TABS.find(t => t.id === tabId) ?? TABS[0];
+		let list = videos.filter(v => inTab(tab, v));
+		let index = startIndex;
+
+		const player = DC.el('div', { class: 'dc-player' });
+		const caption = DC.el('p', { class: 'dc-modal-caption' });
+		const counter = DC.el('span', { class: 'dc-modal-counter' });
+		const strip = DC.el('ul', { class: 'dc-strip', role: 'list' });
+
+		const play = i => {
+			index = (i + list.length) % list.length;
+			const video = list[index];
+			player.replaceChildren(DC.el('iframe', {
+				src: `https://www.youtube-nocookie.com/embed/${encodeURIComponent(video.key)}?autoplay=1&rel=0&playsinline=1`,
+				title: video.name, allow: 'autoplay; encrypted-media; picture-in-picture; fullscreen', allowfullscreen: '',
+			}));
+			caption.replaceChildren(DC.el('strong', { text: video.type }), ` · ${video.name}`);
+			counter.textContent = `${index + 1} / ${list.length}`;
+			modal.setAttribute('aria-label', video.name);
+			strip.querySelectorAll('.dc-strip-item').forEach((item, n) => item.setAttribute('aria-current', String(n === index)));
+			strip.children[index]?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+		};
+
+		const fillStrip = () => {
+			strip.replaceChildren(...list.map((video, n) => DC.el('li', { class: 'dc-strip-item' }, [
+				DC.el('button', { type: 'button', class: 'dc-strip-button', title: video.name, 'aria-label': `Play ${video.name}`, onclick: () => play(n) }, [
+					DC.el('img', { src: thumbUrl(video), alt: '', loading: 'lazy', width: '160', height: '90' }),
+					DC.el('span', { class: 'dc-strip-title', text: video.name }),
+				]),
+			])));
+		};
+
+		const tabs = tabsFor(videos);
+		const tabBar = buildTabs(tabs, tab.id, next => {
+			tab = next;
+			list = videos.filter(v => inTab(tab, v));
+			fillStrip();
+			play(0);
+		});
+		if (tabs.length <= 2) tabBar.hidden = true;
+
 		const close = () => {
 			modal.remove();
 			document.removeEventListener('keydown', onKey);
 			document.documentElement.classList.remove('dc-modal-open');
 			lastFocus?.focus?.();
 		};
-		const onKey = event => { if (event.key === 'Escape') close(); };
+		const onKey = event => {
+			if (event.key === 'Escape') close();
+			if (event.key === 'ArrowLeft') play(index - 1);
+			if (event.key === 'ArrowRight') play(index + 1);
+		};
 		const closeButton = DC.el('button', { type: 'button', class: 'dc-modal-close', 'aria-label': 'Close', onclick: close, text: '×' });
-		const modal = DC.el('div', { class: 'dc-modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': video.name }, [
+		const modal = DC.el('div', { class: 'dc-modal', role: 'dialog', 'aria-modal': 'true' }, [
 			DC.el('div', { class: 'dc-modal-backdrop', onclick: close }),
 			DC.el('div', { class: 'dc-modal-body' }, [
 				closeButton,
-				DC.el('div', { class: 'dc-player' }, [
-					DC.el('iframe', {
-						src: `https://www.youtube-nocookie.com/embed/${encodeURIComponent(video.key)}?autoplay=1&rel=0&playsinline=1`,
-						title: video.name, allow: 'autoplay; encrypted-media; picture-in-picture; fullscreen', allowfullscreen: '',
-					}),
+				DC.el('div', { class: 'dc-stage' }, [
+					DC.el('button', { type: 'button', class: 'dc-stage-nav dc-stage-prev', 'aria-label': 'Previous video', onclick: () => play(index - 1) }),
+					player,
+					DC.el('button', { type: 'button', class: 'dc-stage-nav dc-stage-next', 'aria-label': 'Next video', onclick: () => play(index + 1) }),
 				]),
-				DC.el('p', { class: 'dc-modal-caption' }, [DC.el('strong', { text: video.type }), ` · ${video.name}`]),
+				DC.el('div', { class: 'dc-modal-meta' }, [caption, counter]),
+				tabBar,
+				strip,
 			]),
 		]);
 		document.body.append(modal);
 		document.documentElement.classList.add('dc-modal-open');
 		document.addEventListener('keydown', onKey);
+		fillStrip();
+		play(index);
 		closeButton.focus();
 	}
 
@@ -153,14 +217,16 @@
 					observer.disconnect();
 				}
 			});
-			observer.observe(document.querySelector('.col-main') ?? document.body, { childList: true, subtree: true });
+			observer.observe(document.querySelector('#film-page-wrapper') ?? document.body, { childList: true, subtree: true });
 			setTimeout(() => observer.disconnect(), 10000);
 		}
 	}
 
+	// The friends section isn't always inside .col-main, so search the whole film page
 	function findFriendsSection() {
-		for (const heading of document.querySelectorAll('.col-main h2, .col-main .section-heading')) {
-			if (/activity from friends/i.test(heading.textContent)) return heading.closest('section') ?? heading;
+		const root = document.querySelector('#film-page-wrapper') ?? document;
+		for (const heading of root.querySelectorAll('h2, .section-heading')) {
+			if (/activity from friends/i.test(heading.textContent)) return heading.closest('section') ?? heading.parentElement;
 		}
 		return null;
 	}

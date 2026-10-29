@@ -15,35 +15,7 @@
 /* clear: Letterboxd floats the main column and sidebar above this spot (same as its .-clear sections) */
 .dc-extras { clear: both; margin-bottom: 30px; }
 
-.dc-tabs {
-	display: flex;
-	gap: 6px;
-	overflow-x: auto;
-	scrollbar-width: none;
-	margin: 0 0 12px;
-	padding-bottom: 2px;
-}
-.dc-tabs::-webkit-scrollbar { display: none; }
-.dc-tabs[hidden] { display: none; }
-
-.dc-tab {
-	flex: none;
-	display: inline-flex;
-	align-items: center;
-	gap: 6px;
-	padding: 5px 10px;
-	border: 0;
-	border-radius: 999px;
-	background: var(--dc-surface);
-	color: var(--dc-text);
-	font: inherit;
-	font-size: 12px;
-	cursor: pointer;
-}
-.dc-tab:hover { background: var(--dc-surface-hover); color: var(--dc-text-strong); }
-.dc-tab[aria-selected="true"] { background: var(--dc-text-strong); color: var(--dc-bg); }
-.dc-tab-count { opacity: 0.7; font-variant-numeric: tabular-nums; }
-.dc-tab:focus-visible, .dc-card-button:focus-visible, .dc-arrow:focus-visible, .dc-modal-close:focus-visible {
+.dc-card-button:focus-visible, .dc-arrow:focus-visible, .dc-modal-close:focus-visible {
 	outline: 2px solid var(--dc-green);
 	outline-offset: 2px;
 }
@@ -173,7 +145,6 @@
 /* --- Phones: two cards per screen, bigger touch targets --- */
 @media (max-width: 600px) {
 	.dc-row { grid-auto-columns: 72%; }
-	.dc-tab { padding: 8px 12px; font-size: 13px; }
 	.dc-modal { padding: 8px; }
 	.dc-modal-close { top: -44px; width: 44px; height: 44px; }
 }
@@ -193,3 +164,46 @@
 }
 .dc-csm-button:hover { background: var(--dc-surface-hover); color: #fff; }
 .dc-csm-button img { flex: none; border-radius: 2px; }
+
+/* --- Native Letterboxd tabs (Extras section and player) --- */
+.dc-tab-filters { margin: 0 0 12px; overflow-x: auto; scrollbar-width: none; }
+.dc-tab-filters::-webkit-scrollbar { display: none; }
+.dc-tab-filters[hidden] { display: none; }
+.dc-tab-filters .tablist { display: flex; flex-wrap: nowrap; }
+.dc-tab-filters .trigger { flex: none; background: none; border: 0; font: inherit; }
+
+/* --- Player: prev/next around the video, then caption, tabs and a filmstrip --- */
+.dc-modal-body { width: min(1100px, 100%); max-height: calc(100vh - 32px); display: flex; flex-direction: column; }
+.dc-stage { position: relative; }
+.dc-stage .dc-player { width: 100%; max-height: calc(100vh - 260px); aspect-ratio: 16 / 9; margin: 0 auto; }
+.dc-stage-nav {
+	position: absolute; top: 50%; z-index: 2; width: 44px; height: 64px; margin-top: -32px;
+	border: 0; border-radius: 4px; background: rgba(20, 24, 28, 0.7); color: #fff; cursor: pointer;
+}
+.dc-stage-nav:hover { background: rgba(44, 52, 64, 0.95); }
+.dc-stage-nav::before { content: ""; display: block; width: 10px; height: 10px; margin: auto; border: solid #fff; border-width: 0 2px 2px 0; }
+.dc-stage-prev { left: -56px; }
+.dc-stage-prev::before { transform: translateX(2px) rotate(135deg); }
+.dc-stage-next { right: -56px; }
+.dc-stage-next::before { transform: translateX(-2px) rotate(-45deg); }
+.dc-modal-meta { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; margin: 10px 0 8px; }
+.dc-modal-meta .dc-modal-caption { margin: 0; }
+.dc-modal-counter { flex: none; color: var(--dc-text); font-size: 12px; font-variant-numeric: tabular-nums; }
+.dc-modal-body .dc-tab-filters { margin: 0 0 8px; }
+.dc-strip { display: flex; gap: 8px; margin: 0; padding: 2px 2px 6px; list-style: none; overflow-x: auto; scrollbar-width: thin; }
+.dc-strip-item { flex: none; width: 150px; }
+.dc-strip-button { display: block; width: 100%; padding: 0; border: 0; background: none; color: var(--dc-text); text-align: left; font: inherit; cursor: pointer; }
+.dc-strip-button img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 3px; box-shadow: inset 0 0 0 1px rgba(221, 238, 255, 0.25); opacity: 0.7; }
+.dc-strip-button:hover img { opacity: 1; }
+.dc-strip-item[aria-current="true"] img { opacity: 1; outline: 2px solid var(--dc-green); outline-offset: -2px; }
+.dc-strip-title { display: block; margin-top: 4px; font-size: 11px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dc-strip-item[aria-current="true"] .dc-strip-title { color: var(--dc-text-strong); }
+.dc-strip-button:focus-visible, .dc-stage-nav:focus-visible { outline: 2px solid var(--dc-green); outline-offset: 2px; }
+/* Narrow screens: arrows sit on the video instead of outside it */
+@media (max-width: 1240px) { .dc-stage-prev { left: 8px; } .dc-stage-next { right: 8px; } }
+@media (max-width: 600px) { .dc-strip-item { width: 120px; } .dc-stage .dc-player { max-height: none; } }
+
+/* --- Metacritic heading: Letterboxd Extras' logo files 404 on metacritic.com now, so show a text label --- */
+.meta-ratings .section-heading-extras .icon-meta,
+.meta-ratings .section-heading-extras .text-meta { display: none !important; }
+.meta-ratings .section-heading-extras > a::before { content: "Metacritic"; }

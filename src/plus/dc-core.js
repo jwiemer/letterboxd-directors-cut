@@ -59,7 +59,8 @@ const DC = (() => {
 	}
 
 	function isFilmPage() {
-		return /^\/film\/[^/]+\/?$/.test(location.pathname);
+		// The film page plus its tab subpages (/cast/, /crew/, /details/, /genres/, /releases/…), which are the same page
+		return /^\/film\/[^/]+\/(?:(?:cast|crew|details|genres|releases|studios|themes)\/?)?$/.test(location.pathname);
 	}
 
 	function el(tag, attrs = {}, children = []) {

@@ -351,7 +351,8 @@ function buildPanel() {
     const hasPosters = filmData.posters.length > 0;
     const tab = (id, label) => {
       const isActive = activeTab === id;
-      return `<a class="trigger tmdb-tab" data-tab="${id}" role="tab" aria-selected="${isActive}" tabindex="${isActive ? 0 : -1}"><span class="label">${label}</span></a>`;
+      // Director's Cut: <button> (not <a> without href) so Letterboxd's native tab hover applies
+      return `<button type="button" class="trigger tmdb-tab" data-tab="${id}" role="tab" aria-selected="${isActive}" tabindex="${isActive ? 0 : -1}"><span class="label">${label}</span></button>`;
     };
     panel.innerHTML = `
       <div class="tmdb-panel-header">
@@ -364,9 +365,11 @@ function buildPanel() {
         </div>
       </div>
 
-      ${canSet && images.length ? `<div class="tmdb-set-row">
+      ${images.length ? `<div class="tmdb-set-row">
+        ${activeTab === "posters" ? languageSelect() : ""}
         <span class="lb-set-status" role="status" aria-live="polite"></span>
-        <button class="lb-set tmdb-set" type="button" title="Set the image shown below as your Letterboxd ${activeTab === "posters" ? "poster" : "backdrop"}">Set</button>
+        <button class="lb-btn-mode tmdb-open-grid" type="button" title="Grid view" aria-label="Open grid view">${gridIcon()}</button>
+        ${canSet ? `<button class="lb-set tmdb-set" type="button" title="Set the image shown below as your Letterboxd ${activeTab === "posters" ? "poster" : "backdrop"}">Set</button>` : ""}
       </div>` : ""}
       ${renderCarousel(images, activeTab === "posters" ? "is-poster" : "")}
     `;
@@ -389,6 +392,17 @@ function buildPanel() {
       currentIndex = 0;
       buildPanel();
     });
+  });
+
+  // Director's Cut: sidebar grid button and language filter (posters)
+  panel.querySelector(".tmdb-open-grid")?.addEventListener("click", () => {
+    preloadAllImagesOnce();
+    openLightbox(currentIndex, "grid");
+  });
+  panel.querySelector(".tmdb-set-row .tmdb-lang-select")?.addEventListener("change", (e) => {
+    langFilter[activeTab] = e.target.value;
+    currentIndex = 0;
+    buildPanel();
   });
 
   // Director's Cut: sidebar Set button acts on the image the carousel is showing

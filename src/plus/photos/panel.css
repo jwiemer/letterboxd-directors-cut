@@ -22,8 +22,11 @@
    a.trigger > span.label) so they inherit Letterboxd's CSS and match the
    cast/crew/details tab strip exactly. We only need a few overrides here. */
 
-#tmdb-photo-panel .content-tab-filters .tablist a.trigger.tmdb-tab {
+#tmdb-photo-panel .content-tab-filters .tablist .trigger.tmdb-tab {
   cursor: pointer;
+  background: none;
+  border: 0;
+  font: inherit;
 }
 
 /* ── Carousel ──────────────────────────────────────────────────────────────── */
@@ -528,3 +531,11 @@
 .tmdb-set-row { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin: 0 0 8px; }
 .tmdb-set-row .lb-set { margin-left: 0; padding: 4px 14px; font-size: 13px; }
 .tmdb-set-row .lb-set-status { flex: 1; flex-basis: auto; text-align: left; font-size: 12px; color: #9ab; }
+
+/* Director's Cut: sidebar row = language (posters) · status · grid · Set */
+.tmdb-set-row .tmdb-lang-select { flex: 0 1 auto; max-width: 60%; }
+.tmdb-set-row .tmdb-open-grid {
+  display: inline-grid; place-items: center; width: 30px; height: 28px; padding: 0;
+  border: 0; border-radius: 4px; background: #2c3440; color: #9ab; cursor: pointer;
+}
+.tmdb-set-row .tmdb-open-grid:hover { background: #384250; color: #fff; }
