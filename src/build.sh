@@ -26,4 +26,10 @@ cp "$SOURCE_DIR/$TARGET/"* "$DIST_DIR/"
 # Director's Cut features (src/plus/) ship as separate content scripts
 rsync -a "$SOURCE_DIR/plus/" "$DIST_DIR/plus/"
 
+# Director's Cut version: the manifest keeps upstream's number (so merges stay clean);
+# the built copy gets ours from plus/VERSION, or DC_VERSION when the release Action sets it from the tag
+DC_VERSION="${DC_VERSION:-$(tr -d '[:space:]' < "$SOURCE_DIR/plus/VERSION")}"
+sed -i.bak -E "s/\"version\": \"[^\"]+\"/\"version\": \"$DC_VERSION\"/" "$DIST_DIR/manifest.json" && rm "$DIST_DIR/manifest.json.bak"
+rm -f "$DIST_DIR/plus/VERSION"
+
 echo "Build complete: $DIST_DIR"

@@ -1,6 +1,6 @@
 # Letterboxd: Director's Cut
 
-A fork of [Letterboxd Extras](https://github.com/duncanlang/Letterboxd-Extras) by Duncan Lang, with a few extra features for [Letterboxd](https://letterboxd.com/) film pages. Everything in Letterboxd Extras still works: ratings from other sites, the Wikipedia button, box office, and the rest. Unofficial and unlisted; personal project.
+A Chrome extension that adds trailers and featurettes, photo galleries, ratings from other sites, and more to [Letterboxd](https://letterboxd.com/) film pages. Unofficial; personal project. Built on [Letterboxd Extras](https://github.com/duncanlang/Letterboxd-Extras) (see Credits).
 
 ## What it adds
 - **Extras carousel:** trailers, teasers, featurettes, behind the scenes, clips and bloopers from [TMDB](https://www.themoviedb.org/), with tabs by type. Click a video to play it in a larger player. Official videos only, unless you turn on unofficial ones in settings. Sits above *Activity from Friends* (or above reviews when you're logged out).

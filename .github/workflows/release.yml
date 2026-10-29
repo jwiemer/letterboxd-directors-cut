@@ -21,7 +21,10 @@ jobs:
 
       - name: Build Chrome and Firefox
         working-directory: src
+        env:
+          DC_VERSION: ${{ github.ref_name }}
         run: |
+          export DC_VERSION="${DC_VERSION#v}"  # v0.2.4 -> 0.2.4
           npm install --no-audit --no-fund
           ./build.sh chrome
           ./build.sh firefox
