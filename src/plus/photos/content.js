@@ -486,6 +486,7 @@ function openLightbox(startIndex) {
             <img class="lb-main-img" src="${images[idx]}" alt="" draggable="false" />
             <button class="lb-nav lb-nav-right" aria-label="Next">&#8250;</button>
           </div>
+          ${pageMode === "film" ? `<div class="lb-info"></div>` : ""}
         ` : `
           <div class="lb-grid">
             ${images.map((src, i) => `
@@ -509,6 +510,7 @@ function openLightbox(startIndex) {
       // Director's Cut: download the current image at TMDB's original (largest) size
       const downloadBtn = lb.querySelector(".lb-btn-download");
       downloadBtn.addEventListener("click", () => downloadOriginal(images[idx], idx, downloadBtn));
+      renderInfoBar(lb.querySelector(".lb-info"), images[idx]);
       lb.querySelector(".lb-nav-left").addEventListener("click", () => stepLightbox(-1));
       lb.querySelector(".lb-nav-right").addEventListener("click", () => stepLightbox(1));
       lb.querySelector(".lb-main-img").addEventListener("click", () => stepLightbox(1));
@@ -531,6 +533,7 @@ function openLightbox(startIndex) {
     const counter = lb.querySelector(".lb-counter");
     if (mainImg) swapImageWhenReady(mainImg, images[idx]);
     if (counter) counter.textContent = `${idx + 1} / ${images.length}`;
+    renderInfoBar(lb.querySelector(".lb-info"), images[idx]);
     preloadNeighbours(images, idx);
   }
 
@@ -590,6 +593,76 @@ async function downloadOriginal(src, index, button) {
     setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
   } catch {
     window.open(url, "_blank", "noopener"); // Fallback: open the full-size image in a new tab
+  } finally {
+    button.disabled = false;
+  }
+}
+
+// ─── Info bar + "Set as my Letterboxd poster/backdrop" (Director's Cut) ─────
+// Resolution, language and a link to the original file, like TMDB's lightbox (TMDB's API has no uploader).
+// The Set button needs Letterboxd Patron. It uses Letterboxd's own picker endpoints:
+//   GET  /film/<slug>/<kind>-picker/?objectId=   → options; each data-id is the TMDB file path
+//   POST /film/<slug>/customize-<kind>/          → __csrf, <kind>Id, source, objectOnly, objectId
+// It only says "Saved" after re-reading the picker and seeing the choice selected.
+function renderInfoBar(bar, url) {
+  if (!bar) return;
+  const info = filmData?.meta?.[url];
+  const kind = activeTab === "posters" ? "poster" : "backdrop";
+  const lang = info?.lang ? langName(info.lang) : "No Language";
+  bar.innerHTML = `
+    <span class="lb-info-item">${info ? `${info.width} × ${info.height}` : ""}</span>
+    <span class="lb-info-item">${lang}</span>
+    <a class="lb-info-item lb-info-link" href="${toOriginalUrl(url)}" target="_blank" rel="noopener">View original ↗</a>
+    <button class="lb-set" type="button">Set as my Letterboxd ${kind}</button>
+    <span class="lb-set-status" role="status" aria-live="polite"></span>
+  `;
+  const button = bar.querySelector(".lb-set");
+  const status = bar.querySelector(".lb-set-status");
+  button.addEventListener("click", () => setOnLetterboxd(kind, info?.filePath, button, status));
+}
+
+function letterboxdCsrf() {
+  for (const script of document.querySelectorAll("script:not([src])")) {
+    const match = script.textContent.match(/supermodelCSRF\s*=\s*['"]([^'"]+)['"]/);
+    if (match?.[1]) return match[1];
+  }
+  return document.cookie.match(/(?:^|;\s*)com\.xk72\.webparts\.csrf=([^;]+)/)?.[1] || null;
+}
+
+async function pickerOption(slug, kind, filePath) {
+  const res = await fetch(`/film/${slug}/${kind}-picker/?objectId=`, { credentials: "include" });
+  if (res.status === 401 || res.status === 403) throw new Error("Log in to Letterboxd first");
+  if (!res.ok) throw new Error(`Picker didn't load (${res.status})`);
+  const doc = new DOMParser().parseFromString(await res.text(), "text/html");
+  const option = [...doc.querySelectorAll("[data-js-content-media-picker-media-item]")].find((el) => el.dataset.id === filePath);
+  const selected = !!option?.querySelector('input[type="radio"]')?.hasAttribute("checked");
+  return { option, selected };
+}
+
+async function setOnLetterboxd(kind, filePath, button, status) {
+  const slug = location.pathname.match(/^\/film\/([^/]+)/)?.[1];
+  if (!slug || !filePath) return;
+  button.disabled = true;
+  status.textContent = "Saving…";
+  try {
+    const { option } = await pickerOption(slug, kind, filePath);
+    if (!option) throw new Error(`Letterboxd doesn't offer this ${kind}`);
+    const csrf = letterboxdCsrf();
+    if (!csrf) throw new Error("Couldn't find Letterboxd's security token; reload the page");
+
+    const body = new URLSearchParams({ __csrf: csrf, [`${kind}Id`]: filePath, source: option.dataset.source || "tmdb", objectOnly: "false", objectId: "" });
+    const res = await fetch(`/film/${slug}/customize-${kind}/`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8", "X-Requested-With": "XMLHttpRequest" },
+      body,
+    });
+    if (!res.ok) throw new Error(`Letterboxd said no (${res.status})${res.status === 403 ? ": Patron only?" : ""}`);
+
+    const check = await pickerOption(slug, kind, filePath);
+    status.textContent = check.selected ? "Saved ✓ Reload to see it" : "Sent, but couldn't confirm. Check Letterboxd's picker";
+  } catch (err) {
+    status.textContent = err.message;
   } finally {
     button.disabled = false;
   }

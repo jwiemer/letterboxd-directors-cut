@@ -4,7 +4,12 @@ A fork of [Letterboxd Extras](https://github.com/duncanlang/Letterboxd-Extras) b
 
 ## What it adds
 - **Extras carousel:** trailers, teasers, featurettes, behind the scenes, clips and bloopers from [TMDB](https://www.themoviedb.org/), with tabs by type. Click a video to play it in a larger player. Official videos only, unless you turn on unofficial ones in settings. Sits above *Activity from Friends* (or above reviews when you're logged out).
-- **Photos:** stills and posters on film pages, a full-screen gallery, photo galleries on cast and crew pages, faces when you hover cast names, and photos in search results. Merged from [Letterboxd Photos](https://github.com/Asoronite/Letterboxd_Photos) by Enes Köse.
+- **Photos:** every still and poster TMDB has for a film, a full-screen gallery, photo galleries on cast and crew pages, faces when you hover cast names, and photos in search results. Merged from [Letterboxd Photos](https://github.com/Asoronite/Letterboxd_Photos) by Enes Köse, with these additions:
+  - **Language filter** with counts. Defaults to your language plus No Language; switch to All or any one language.
+  - **Group similar ↗** opens TMDB's grouped view for the same tab and language.
+  - **Info bar** in the gallery: resolution, language, and a link to the original file.
+  - **Download** saves the original file, the largest size TMDB has.
+  - **Set as my Letterboxd poster / backdrop** (Letterboxd Patron only). Uses Letterboxd's own picker, only offers images Letterboxd has, and only says "Saved" once Letterboxd shows the choice as selected.
 - **Common Sense Media:** a link to the film's age rating and parents guide, in the ratings sidebar. It's a link only: Common Sense's terms don't allow showing their ratings on other sites.
 - **A new settings page:** dark theme to match Letterboxd, toggle switches, a sidebar, and search across all settings. Works in the toolbar popup and on narrow screens.
 
