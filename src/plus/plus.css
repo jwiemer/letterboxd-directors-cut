@@ -154,7 +154,7 @@
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
-	margin-top: 4px;
+	margin-top: 0;
 	padding: 6px 10px;
 	border-radius: var(--dc-radius);
 	background: var(--dc-surface);
@@ -207,3 +207,19 @@
 .meta-ratings .section-heading-extras .icon-meta,
 .meta-ratings .section-heading-extras .text-meta { display: none !important; }
 .meta-ratings .section-heading-extras > a::before { content: "Metacritic"; }
+
+/* --- Ratings sidebar rhythm: same gap between every ratings section and the same space under every heading.
+   Overrides Letterboxd Extras' inline heading styles (IMDb margin 15px, CinemaScore height 13px). --- */
+.sidebar section.ratings-histogram-chart,
+.sidebar .extras-ratings-holder > section {
+	margin-bottom: 32px !important;
+}
+.sidebar section.ratings-histogram-chart > .section-heading {
+	height: auto !important;
+	min-height: 19px;
+	margin-bottom: 12px !important;
+}
+/* IMDb's heading margin is inline !important (15px); pull its chart up to the shared 12px */
+.sidebar .imdb-ratings > .rating-histogram-extras { margin-top: -3px; }
+/* Metacritic: its badge row sits 5px low (inline margin-top) */
+.sidebar .meta-ratings > .meta-must-see { margin-top: 0 !important; }
