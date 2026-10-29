@@ -362,10 +362,7 @@ function buildPanel() {
           </div>
         </div>
       </div>
-      <div class="tmdb-panel-filters">
-        ${languageSelect()}
-        <a class="tmdb-group-link" href="${groupSimilarUrl()}" target="_blank" rel="noopener">Group similar ↗</a>
-      </div>
+
       ${renderCarousel(images, activeTab === "posters" ? "is-poster" : "")}
     `;
   }
@@ -387,13 +384,6 @@ function buildPanel() {
       currentIndex = 0;
       buildPanel();
     });
-  });
-
-  // Language filter (film only)
-  panel.querySelector(".tmdb-lang-select")?.addEventListener("change", (e) => {
-    langFilter[activeTab] = e.target.value;
-    currentIndex = 0;
-    buildPanel();
   });
 
   // Arrows
@@ -451,7 +441,7 @@ function navigate(dir) {
 
 // ─── Lightbox ─────────────────────────────────────────────────────────────────
 
-function openLightbox(startIndex) {
+function openLightbox(startIndex, startMode = "single") {
   const existing = document.getElementById("tmdb-lightbox");
   if (existing) existing.remove();
 
@@ -459,7 +449,7 @@ function openLightbox(startIndex) {
   if (!images.length) return;
 
   let idx = startIndex;
-  let mode = "single";
+  let mode = startMode;
 
   const lb = document.createElement("div");
   lb.id = "tmdb-lightbox";
@@ -471,6 +461,7 @@ function openLightbox(startIndex) {
       <div class="lb-shell lb-mode-${mode}${isPortrait ? " lb-portrait" : ""}">
         <div class="lb-topbar">
           <span class="lb-counter">${idx + 1} / ${images.length}</span>
+          ${pageMode === "film" ? `<div class="lb-filters">${languageSelect()}<a class="tmdb-group-link" href="${groupSimilarUrl()}" target="_blank" rel="noopener">Group similar ↗</a></div>` : ""}
           <div class="lb-topbar-actions">
             ${mode === "single" ? `<button class="lb-btn-download" title="Download full resolution" aria-label="Download full resolution">${downloadIcon()}</button>` : ""}
             <button class="lb-btn-mode" data-mode="${mode}" title="${mode === "single" ? "Grid view" : "Single view"}">
@@ -501,6 +492,15 @@ function openLightbox(startIndex) {
 
     lb.querySelector(".lb-backdrop").addEventListener("click", closeLightbox);
     lb.querySelector(".lb-close").addEventListener("click", closeLightbox);
+    // Director's Cut: changing language reopens the gallery on the filtered set, same view
+    lb.querySelector(".tmdb-lang-select")?.addEventListener("change", (e) => {
+      langFilter[activeTab] = e.target.value;
+      const keepMode = mode;
+      idx = 0;
+      closeLightbox();
+      buildPanel();
+      openLightbox(0, keepMode);
+    });
     lb.querySelector(".lb-btn-mode").addEventListener("click", () => {
       mode = mode === "single" ? "grid" : "single";
       renderLightbox();
@@ -603,7 +603,7 @@ async function downloadOriginal(src, index, button) {
 // The Set button needs Letterboxd Patron. It uses Letterboxd's own picker endpoints:
 //   GET  /film/<slug>/<kind>-picker/?objectId=   → options; each data-id is the TMDB file path
 //   POST /film/<slug>/customize-<kind>/          → __csrf, <kind>Id, source, objectOnly, objectId
-// It only says "Saved" after re-reading the picker and seeing the choice selected.
+// On success the page reloads to show the new image; errors stay visible in the info bar.
 function renderInfoBar(bar, url) {
   if (!bar) return;
   const info = filmData?.meta?.[url];
@@ -659,8 +659,9 @@ async function setOnLetterboxd(kind, filePath, button, status) {
     });
     if (!res.ok) throw new Error(`Letterboxd said no (${res.status})${res.status === 403 ? ": Patron only?" : ""}`);
 
-    const check = await pickerOption(slug, kind, filePath);
-    status.textContent = check.selected ? "Saved ✓ Reload to see it" : "Sent, but couldn't confirm. Check Letterboxd's picker";
+    // Saved: reload so the page shows the new poster/backdrop
+    status.textContent = "Saved ✓";
+    location.reload();
   } catch (err) {
     status.textContent = err.message;
   } finally {
