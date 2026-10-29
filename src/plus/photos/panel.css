@@ -1,0 +1,479 @@
+/* ── Panel ─────────────────────────────────────────────────────────────────── */
+
+#tmdb-photo-panel {
+  margin: 16px 0 0;
+  font-family: inherit;
+  width: 100%;
+  max-width: 100%;
+}
+
+.tmdb-panel-header {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.tmdb-panel-label {
+  display: none;
+}
+
+/* Tabs reuse Letterboxd's native classes (.content-tab-filters > .tablist >
+   a.trigger > span.label) so they inherit Letterboxd's CSS and match the
+   cast/crew/details tab strip exactly. We only need a few overrides here. */
+
+#tmdb-photo-panel .content-tab-filters .tablist a.trigger.tmdb-tab {
+  cursor: pointer;
+}
+
+/* ── Carousel ──────────────────────────────────────────────────────────────── */
+
+.tmdb-carousel {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #1b2228;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.tmdb-carousel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.tmdb-carousel.is-poster {
+  aspect-ratio: 2 / 3;
+  max-width: 160px;
+}
+
+#tmdb-photo-panel.is-portrait {
+  margin: 0 0 10px;
+}
+
+#tmdb-photo-panel.is-portrait .tmdb-carousel.is-poster {
+  max-width: 100%;
+  aspect-ratio: 2 / 3;
+}
+
+#tmdb-photo-panel.is-portrait .tmdb-carousel-img {
+  object-fit: contain;
+  background: #1b2228;
+}
+
+/* ── Loading state ─────────────────────────────────────────────────────────── */
+
+.tmdb-loader {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.06) 50%,
+      rgba(255,255,255,0) 100%
+    ) #1b2028;
+  background-size: 200% 100%;
+  animation: tmdb-shimmer 1.2s linear infinite;
+  z-index: 1;
+}
+
+.tmdb-carousel.is-loading .tmdb-loader {
+  display: flex;
+}
+
+.tmdb-loader::after {
+  content: "";
+  width: 26px;
+  height: 26px;
+  border: 2px solid rgba(255,255,255,0.18);
+  border-top-color: rgba(255,255,255,0.6);
+  border-radius: 50%;
+  animation: tmdb-spin 0.9s linear infinite;
+}
+
+@keyframes tmdb-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes tmdb-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Skeleton (pre-data) — make sure the panel reserves its space immediately. */
+#tmdb-photo-panel.is-skeleton .tmdb-carousel {
+  cursor: default;
+}
+
+.tmdb-tab-skel {
+  display: inline-block;
+  width: 80px;
+  height: 12px;
+  background: #2c3440;
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+.tmdb-count {
+  display: inline-block;
+  margin-left: 4px;
+  color: #99aabb;
+  font-weight: 400;
+}
+
+.tmdb-empty-inline {
+  margin: auto;
+  color: #99aabb;
+  font-size: 12px;
+}
+
+.tmdb-carousel-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.15s;
+  user-select: none;
+  background: #14181c;
+}
+
+/* ── Arrows ────────────────────────────────────────────────────────────────── */
+
+.tmdb-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.45);
+  border: none;
+  color: #fff;
+  font-size: 28px;
+  line-height: 1;
+  width: 36px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.15s, background 0.15s;
+  z-index: 2;
+  padding: 0;
+}
+
+.tmdb-carousel:hover .tmdb-arrow { opacity: 1; }
+.tmdb-arrow:hover { background: rgba(0, 0, 0, 0.72); }
+.tmdb-arrow-left  { left: 6px; }
+.tmdb-arrow-right { right: 6px; }
+
+/* ── Counter ───────────────────────────────────────────────────────────────── */
+
+.tmdb-counter {
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #ddd;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.tmdb-carousel:hover .tmdb-counter { opacity: 1; }
+
+.tmdb-empty {
+  font-size: 12px;
+  color: #667;
+  margin: 8px 0 0;
+}
+
+/* ── Lightbox ──────────────────────────────────────────────────────────────── */
+
+#tmdb-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lb-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.lb-shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  background: #111;
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 92vh;
+}
+
+/* Single view: shell hugs the image so there's no empty band between the
+   topbar and the photo. Width is the smaller of viewport, 1100px, or the
+   width implied by capping height at the viewport. */
+.lb-shell.lb-mode-single .lb-single {
+  flex: none;
+  width: min(92vw, 1100px, calc((92vh - 50px) * 16 / 9));
+  aspect-ratio: 16 / 9;
+}
+
+.lb-shell.lb-mode-single.lb-portrait .lb-single {
+  width: min(92vw, calc((92vh - 50px) * 2 / 3));
+  aspect-ratio: 2 / 3;
+}
+
+/* Grid view keeps a roomy fixed-size shell so thumbnails have space to flow. */
+.lb-shell.lb-mode-grid {
+  width: min(92vw, 1100px);
+  height: 92vh;
+}
+
+/* Top bar */
+.lb-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #1a1a1a;
+  border-bottom: 1px solid #2a2a2a;
+  flex-shrink: 0;
+}
+
+.lb-counter {
+  font-size: 12px;
+  color: #778;
+}
+
+.lb-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lb-btn-mode,
+.lb-close {
+  background: none;
+  border: none;
+  color: #99aabb;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.lb-btn-mode:hover,
+.lb-close:hover { background: #2a2a2a; color: #fff; }
+
+.lb-close { font-size: 14px; }
+
+/* Single image view */
+.lb-single {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.lb-main-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;
+  display: block;
+  cursor: pointer;
+  user-select: none;
+}
+
+.lb-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #fff;
+  font-size: 40px;
+  line-height: 1;
+  width: 48px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s;
+  z-index: 2;
+  padding: 0;
+}
+
+.lb-nav:hover { background: rgba(0, 0, 0, 0.75); }
+.lb-nav-left  { left: 10px; }
+.lb-nav-right { right: 10px; }
+
+/* Grid view */
+.lb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 4px;
+  padding: 4px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.lb-thumb {
+  display: block;
+  background: #1a1a1a;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.15s;
+}
+
+.lb-thumb.active { border-color: #00b020; }
+.lb-thumb:hover  { border-color: #557; }
+
+.lb-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Portrait content (posters, people) — show thumbs at their native 2:3
+   proportion so they aren't squashed into a 16:9 box. */
+.lb-shell.lb-portrait .lb-thumb {
+  aspect-ratio: 2 / 3;
+}
+
+/* ── Cast hover: photo injected into Letterboxd's existing tooltip ─────────── */
+
+.tmdb-cast-tooltip-photo {
+  display: block;
+  width: 140px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 4px;
+  margin: 0 auto 6px;
+  /* Inset 1px line matches the carousel/lightbox photo treatment. outline
+     (not box-shadow) works because <img> is a replaced element. */
+  outline: 1px solid rgba(255, 255, 255, 0.18);
+  outline-offset: -1px;
+}
+
+/* Twipsy normally sizes the bubble to its text, so a long role name like
+   "Captain Jack Sparrow" makes the bubble wider than the 140px photo and the
+   margins look lopsided. Pin the inner to the photo width whenever we've
+   injected our photo so the bubble stays balanced for any role name. */
+.twipsy .twipsy-inner,
+.tooltip .tooltip-inner {
+  max-width: none;
+}
+
+.twipsy .twipsy-inner.tmdb-has-photo,
+.tooltip .tooltip-inner.tmdb-has-photo {
+  width: 140px;
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* ── Crew / contributor hover: our own photo-only popup ────────────────────── */
+
+#tmdb-photo-tooltip {
+  position: absolute;
+  z-index: 99998;
+  display: none;
+  pointer-events: none;
+  padding: 4px;
+  background: #14181c;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+}
+
+#tmdb-photo-tooltip img {
+  display: block;
+  width: 140px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 2px;
+  outline: 1px solid rgba(255, 255, 255, 0.18);
+  outline-offset: -1px;
+}
+
+/* ── Search results: replace the star placeholder with a TMDB photo ──────── */
+
+.icon-container.tmdb-has-thumb {
+  position: relative;
+  width: 60px !important;
+  height: 90px !important;
+  margin-right: 14px !important;
+  padding: 0 !important;
+  background: #1b2228 !important;
+  background-image: none !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0;
+}
+
+.icon-container.tmdb-has-thumb::before,
+.icon-container.tmdb-has-thumb::after {
+  display: none !important;
+  content: none !important;
+}
+
+.tmdb-search-thumb-link {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.tmdb-search-thumb {
+  position: absolute;
+  inset: 0;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  object-position: center 20%;
+  border-radius: 4px;
+  z-index: 2;
+}

@@ -23,5 +23,7 @@ mkdir -p "$DIST_DIR"
 rsync -a --exclude node_modules "$SOURCE_DIR/common/" "$DIST_DIR/"
 cp "$SOURCE_DIR/user.js/build/"* "$DIST_DIR/"
 cp "$SOURCE_DIR/$TARGET/"* "$DIST_DIR/"
+# Director's Cut features (src/plus/) ship as separate content scripts
+rsync -a "$SOURCE_DIR/plus/" "$DIST_DIR/plus/"
 
 echo "Build complete: $DIST_DIR"

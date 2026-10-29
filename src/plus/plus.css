@@ -1,0 +1,195 @@
+/* Director's Cut: styles for src/plus/ features.
+   Colours follow Letterboxd's dark theme; tokens shared with the Photos carousel. */
+
+:root {
+	--dc-bg: #14181c;
+	--dc-surface: #2c3440;
+	--dc-surface-hover: #384250;
+	--dc-text: #9ab;
+	--dc-text-strong: #def;
+	--dc-green: #00e054;
+	--dc-radius: 4px;
+}
+
+/* --- Extras carousel --- */
+/* clear: Letterboxd floats the main column and sidebar above this spot (same as its .-clear sections) */
+.dc-extras { clear: both; margin-bottom: 30px; }
+
+.dc-tabs {
+	display: flex;
+	gap: 6px;
+	overflow-x: auto;
+	scrollbar-width: none;
+	margin: 0 0 12px;
+	padding-bottom: 2px;
+}
+.dc-tabs::-webkit-scrollbar { display: none; }
+.dc-tabs[hidden] { display: none; }
+
+.dc-tab {
+	flex: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 5px 10px;
+	border: 0;
+	border-radius: 999px;
+	background: var(--dc-surface);
+	color: var(--dc-text);
+	font: inherit;
+	font-size: 12px;
+	cursor: pointer;
+}
+.dc-tab:hover { background: var(--dc-surface-hover); color: var(--dc-text-strong); }
+.dc-tab[aria-selected="true"] { background: var(--dc-text-strong); color: var(--dc-bg); }
+.dc-tab-count { opacity: 0.7; font-variant-numeric: tabular-nums; }
+.dc-tab:focus-visible, .dc-card-button:focus-visible, .dc-arrow:focus-visible, .dc-modal-close:focus-visible {
+	outline: 2px solid var(--dc-green);
+	outline-offset: 2px;
+}
+
+.dc-row-wrap { position: relative; }
+.dc-row {
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: minmax(200px, calc((100% - 24px) / 3));
+	gap: 12px;
+	margin: 0;
+	padding: 0 0 6px;
+	list-style: none;
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+	scrollbar-width: thin;
+	-webkit-overflow-scrolling: touch;
+}
+.dc-card { scroll-snap-align: start; min-width: 0; }
+
+.dc-card-button {
+	display: block;
+	width: 100%;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: inherit;
+	text-align: left;
+	font: inherit;
+	cursor: pointer;
+}
+.dc-thumb {
+	position: relative;
+	display: block;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	border-radius: var(--dc-radius);
+	background: var(--dc-surface);
+	box-shadow: inset 0 0 0 1px rgba(221, 238, 255, 0.25);
+}
+.dc-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.15s; }
+.dc-card-button:hover .dc-thumb { box-shadow: inset 0 0 0 1px var(--dc-green); }
+.dc-card-button:hover .dc-thumb img { opacity: 0.8; }
+.dc-play {
+	position: absolute;
+	inset: 50% auto auto 50%;
+	width: 40px;
+	height: 40px;
+	margin: -20px 0 0 -20px;
+	border-radius: 50%;
+	background: rgba(20, 24, 28, 0.75);
+}
+.dc-play::after {
+	content: "";
+	position: absolute;
+	top: 12px;
+	left: 15px;
+	border-style: solid;
+	border-width: 8px 0 8px 13px;
+	border-color: transparent transparent transparent #fff;
+}
+.dc-card-type {
+	display: block;
+	margin-top: 6px;
+	color: var(--dc-text);
+	font-size: 10px;
+	letter-spacing: 0.075em;
+	text-transform: uppercase;
+}
+.dc-card-title {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	color: var(--dc-text-strong);
+	font-size: 13px;
+	line-height: 1.35;
+}
+
+.dc-arrow {
+	position: absolute;
+	top: calc((100% - 46px) / 2);
+	z-index: 1;
+	width: 32px;
+	height: 32px;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(20, 24, 28, 0.85);
+	color: #fff;
+	cursor: pointer;
+	transform: translateY(-50%);
+}
+.dc-arrow[hidden] { display: none; }
+.dc-arrow::before { content: ""; display: block; width: 8px; height: 8px; margin: auto; border: solid #fff; border-width: 0 2px 2px 0; }
+.dc-arrow-left { left: -10px; }
+.dc-arrow-left::before { transform: translateX(2px) rotate(135deg); }
+.dc-arrow-right { right: -10px; }
+.dc-arrow-right::before { transform: translateX(-2px) rotate(-45deg); }
+@media (hover: none) { .dc-arrow { display: none; } }
+
+.dc-credit { margin: 8px 0 0; font-size: 11px; color: var(--dc-text); }
+.dc-credit a { color: var(--dc-text); text-decoration: underline; }
+
+/* --- Modal player --- */
+.dc-modal-open, .dc-modal-open body { overflow: hidden; }
+.dc-modal { position: fixed; inset: 0; z-index: 100000; display: grid; place-items: center; padding: 16px; }
+.dc-modal-backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.88); }
+.dc-modal-body { position: relative; width: min(1100px, 100%); }
+.dc-player { aspect-ratio: 16 / 9; background: #000; border-radius: var(--dc-radius); overflow: hidden; }
+.dc-player iframe { width: 100%; height: 100%; border: 0; display: block; }
+.dc-modal-caption { margin: 10px 0 0; color: var(--dc-text); font-size: 13px; }
+.dc-modal-caption strong { color: var(--dc-text-strong); font-weight: 600; }
+.dc-modal-close {
+	position: absolute;
+	top: -40px;
+	right: 0;
+	width: 34px;
+	height: 34px;
+	border: 0;
+	background: none;
+	color: #fff;
+	font-size: 30px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+/* --- Phones: two cards per screen, bigger touch targets --- */
+@media (max-width: 600px) {
+	.dc-row { grid-auto-columns: 72%; }
+	.dc-tab { padding: 8px 12px; font-size: 13px; }
+	.dc-modal { padding: 8px; }
+	.dc-modal-close { top: -44px; width: 44px; height: 44px; }
+}
+
+/* --- Common Sense Media button (ratings sidebar) --- */
+.dc-csm-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 4px;
+	padding: 6px 10px;
+	border-radius: var(--dc-radius);
+	background: var(--dc-surface);
+	color: var(--dc-text-strong);
+	font-size: 12px;
+	text-decoration: none;
+}
+.dc-csm-button:hover { background: var(--dc-surface-hover); color: #fff; }
+.dc-csm-button img { flex: none; border-radius: 2px; }

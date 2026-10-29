@@ -1,12 +1,12 @@
 {
 	"manifest_version": 3,
-	"name": "Letterboxd Extras",
-	"description": "Display ratings from other film sites, and other nifty extras, directly on Letterboxd. Fully customizable.",
+	"name": "Letterboxd: Director's Cut",
+	"description": "Letterboxd Extras plus an Extras video carousel, photo galleries and a Common Sense Media link. A fork of Letterboxd Extras.",
 	"version": "3.20.5",
 	"minimum_chrome_version": "116",
 	
 	"action": {
-		"default_title": "Letterboxd Extras",
+		"default_title": "Letterboxd: Director's Cut",
 		"default_popup": "options.html?type=action",
 		"default_icon": {
 			"16": "icon16.png",
@@ -43,6 +43,7 @@
 	],
 
 	"host_permissions": [
+		"https://vinciamomedia.com/*",
 		"https://www.imdb.com/*",
 		"https://letterboxd.com/*",
 		"https://*.imdb.com/*",
@@ -78,6 +79,12 @@
 		{
 			"matches": [ "https://letterboxd.com/*" ],
 			"js": [ "polyfill.js", "additional.js", "letterboxd-extras.user.js" ],
+			"run_at": "document_end"
+		},
+		{
+			"matches": [ "https://letterboxd.com/*" ],
+			"js": [ "plus/dc-core.js", "plus/extras.js", "plus/photos/photos-api.js", "plus/photos/content.js", "plus/commonsense.js" ],
+			"css": [ "plus/plus.css", "plus/photos/panel.css" ],
 			"run_at": "document_end"
 		}
 	],
