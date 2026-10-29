@@ -705,9 +705,11 @@ async function setOnLetterboxd(kind, filePath, button, status) {
     });
     if (!res.ok) throw new Error(`Letterboxd said no (${res.status})${res.status === 403 ? ": Patron only?" : ""}`);
 
-    // Saved: reload so the page shows the new poster/backdrop
+    // Saved: go to the film's main page (not /cast/, /crew/…) so the new poster/backdrop shows
     status.textContent = "Saved ✓";
-    location.reload();
+    const mainPage = `/film/${slug}/`;
+    if (location.pathname === mainPage) location.reload();
+    else location.assign(mainPage);
   } catch (err) {
     status.textContent = err.message;
   } finally {
