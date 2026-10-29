@@ -608,10 +608,10 @@ function renderInfoBar(bar, url) {
   if (!bar) return;
   const info = filmData?.meta?.[url];
   const kind = activeTab === "posters" ? "poster" : "backdrop";
-  const lang = info?.lang ? langName(info.lang) : "No Language";
+  const lang = info?.lang ? langName(info.lang) : ""; // textless images: no label
   bar.innerHTML = `
     <span class="lb-info-item">${info ? `${info.width} × ${info.height}` : ""}</span>
-    <span class="lb-info-item">${lang}</span>
+    ${lang ? `<span class="lb-info-item">${lang}</span>` : ""}
     <a class="lb-info-item lb-info-link" href="${toOriginalUrl(url)}" target="_blank" rel="noopener">View original ↗</a>
     <button class="lb-set" type="button">Set as my Letterboxd ${kind}</button>
     <span class="lb-set-status" role="status" aria-live="polite"></span>

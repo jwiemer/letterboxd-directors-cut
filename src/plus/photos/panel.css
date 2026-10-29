@@ -513,3 +513,13 @@
    instead of squeezing rows to fit the window */
 .lb-grid { grid-auto-rows: max-content; align-content: start; min-height: 0; }
 .lb-thumb { align-self: start; height: auto; }
+
+/* Director's Cut: leave room for the info bar under the image (film pages).
+   Stills: one row (~52px). Posters are narrow, so the bar wraps to two rows (~96px). */
+.lb-shell.lb-mode-single:has(.lb-info) .lb-single {
+  width: min(92vw, 1100px, calc((92vh - 50px - 52px) * 16 / 9));
+}
+.lb-shell.lb-mode-single.lb-portrait:has(.lb-info) .lb-single {
+  width: min(92vw, calc((92vh - 50px - 96px) * 2 / 3));
+}
+.lb-shell.lb-portrait .lb-info .lb-set { margin-left: 0; }
