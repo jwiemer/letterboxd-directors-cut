@@ -3,6 +3,9 @@
 let allImages = [];
 let currentIndex = 0;
 let activeTab = "backdrops";
+// Director's Cut: language filter per tab. "default" = your language + No Language; "all"; "xx" = No Language; else an ISO 639-1 code.
+let langFilter = { backdrops: "default", posters: "default" };
+const userLang = (navigator.language || "en").slice(0, 2).toLowerCase();
 let filmData = null;
 let personData = null;
 let pageMode = null; // "film" | "person"
@@ -158,7 +161,62 @@ function insertPersonPanel(panel) {
 function getActiveImages() {
   if (pageMode === "person") return personData?.profiles || [];
   if (!filmData) return [];
-  return activeTab === "backdrops" ? filmData.backdrops : filmData.posters;
+  const all = activeTab === "backdrops" ? filmData.backdrops : filmData.posters;
+  const filter = langFilter[activeTab];
+  const filtered = all.filter((url) => langMatches(url, filter));
+  // Nothing in your language? Show everything rather than an empty gallery.
+  return filtered.length || filter !== "default" ? filtered : all;
+}
+
+// ─── Language filter (Director's Cut) ────────────────────────────────────────
+
+function langOf(url) {
+  return filmData?.meta?.[url]?.lang ?? null;
+}
+
+function langMatches(url, filter) {
+  const lang = langOf(url);
+  if (filter === "all") return true;
+  if (filter === "default") return lang === null || lang === userLang;
+  if (filter === "xx") return lang === null;
+  return lang === filter;
+}
+
+const langNames = (() => {
+  try { return new Intl.DisplayNames([navigator.language || "en"], { type: "language" }); } catch { return null; }
+})();
+function langName(code) {
+  if (code === "xx") return "No Language";
+  return langNames?.of(code) || code.toUpperCase();
+}
+
+function languageSelect() {
+  const all = activeTab === "backdrops" ? filmData.backdrops : filmData.posters;
+  const counts = new Map();
+  for (const url of all) {
+    const code = langOf(url) ?? "xx";
+    counts.set(code, (counts.get(code) || 0) + 1);
+  }
+  const defaultCount = all.filter((url) => langMatches(url, "default")).length;
+  const current = langFilter[activeTab];
+  const option = (value, label, count) =>
+    `<option value="${value}"${value === current ? " selected" : ""}>${label} (${count})</option>`;
+  const languages = [...counts.entries()]
+    .sort((a, b) => (a[0] === "xx" ? -1 : b[0] === "xx" ? 1 : b[1] - a[1]))
+    .map(([code, count]) => option(code, langName(code), count));
+  return `<select class="tmdb-lang-select" aria-label="Filter by language">
+    ${option("default", `${langName(userLang)} + No Language`, defaultCount)}
+    ${option("all", "All languages", all.length)}
+    <optgroup label="Language">${languages.join("")}</optgroup>
+  </select>`;
+}
+
+// TMDB's own "Group similar" view for the same tab and language
+function groupSimilarUrl() {
+  const filter = langFilter[activeTab];
+  const code = filter === "default" ? (activeTab === "posters" ? userLang : "xx") : filter;
+  const params = new URLSearchParams(filter === "all" ? { group_similar: "1" } : { image_language: code, group_similar: "1" });
+  return `https://www.themoviedb.org/${filmData.mediaType || "movie"}/${filmData.tmdbId}/images/${activeTab}?${params}`;
 }
 
 // ─── Image loading helpers ────────────────────────────────────────────────────
@@ -183,10 +241,9 @@ let preloadedAll = false;
 function preloadAllImagesOnce() {
   if (preloadedAll) return;
   preloadedAll = true;
-  const urls = [];
-  if (filmData) urls.push(...filmData.backdrops, ...filmData.posters);
-  if (personData) urls.push(...personData.profiles);
-  for (const u of urls) preloadImage(u);
+  // Director's Cut: with no cap there can be 200+ images, so only warm up the next dozen
+  const images = getActiveImages();
+  for (let i = 1; i <= Math.min(12, images.length - 1); i++) preloadImage(images[(currentIndex + i) % images.length]);
 }
 
 function attachImageLoadState(imgEl) {
@@ -305,6 +362,10 @@ function buildPanel() {
           </div>
         </div>
       </div>
+      <div class="tmdb-panel-filters">
+        ${languageSelect()}
+        <a class="tmdb-group-link" href="${groupSimilarUrl()}" target="_blank" rel="noopener">Group similar ↗</a>
+      </div>
       ${renderCarousel(images, activeTab === "posters" ? "is-poster" : "")}
     `;
   }
@@ -326,6 +387,13 @@ function buildPanel() {
       currentIndex = 0;
       buildPanel();
     });
+  });
+
+  // Language filter (film only)
+  panel.querySelector(".tmdb-lang-select")?.addEventListener("change", (e) => {
+    langFilter[activeTab] = e.target.value;
+    currentIndex = 0;
+    buildPanel();
   });
 
   // Arrows
@@ -404,6 +472,7 @@ function openLightbox(startIndex) {
         <div class="lb-topbar">
           <span class="lb-counter">${idx + 1} / ${images.length}</span>
           <div class="lb-topbar-actions">
+            ${mode === "single" ? `<button class="lb-btn-download" title="Download full resolution" aria-label="Download full resolution">${downloadIcon()}</button>` : ""}
             <button class="lb-btn-mode" data-mode="${mode}" title="${mode === "single" ? "Grid view" : "Single view"}">
               ${mode === "single" ? gridIcon() : singleIcon()}
             </button>
@@ -437,6 +506,9 @@ function openLightbox(startIndex) {
     });
 
     if (mode === "single") {
+      // Director's Cut: download the current image at TMDB's original (largest) size
+      const downloadBtn = lb.querySelector(".lb-btn-download");
+      downloadBtn.addEventListener("click", () => downloadOriginal(images[idx], idx, downloadBtn));
       lb.querySelector(".lb-nav-left").addEventListener("click", () => stepLightbox(-1));
       lb.querySelector(".lb-nav-right").addEventListener("click", () => stepLightbox(1));
       lb.querySelector(".lb-main-img").addEventListener("click", () => stepLightbox(1));
@@ -487,6 +559,44 @@ function openLightbox(startIndex) {
     if (img) swapImageWhenReady(img, images[currentIndex]);
     if (counter) counter.textContent = `${currentIndex + 1} / ${images.length}`;
   }
+}
+
+// ─── Download (Director's Cut) ────────────────────────────────────────────────
+// TMDB's "original" size is the full file as uploaded: the largest it offers.
+function toOriginalUrl(src) {
+  return src.replace(/\/t\/p\/[^/]+\//, "/t/p/original/");
+}
+
+function downloadFileName(src, index) {
+  const ext = (src.match(/\.(jpe?g|png|webp)(?:$|\?)/i)?.[1] || "jpg").toLowerCase();
+  const subject = pageMode === "person" ? personData?.name : filmData?.title;
+  const slug = (subject || "letterboxd").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const kind = pageMode === "person" ? "photo" : activeTab === "posters" ? "poster" : "still";
+  return `${slug}-${kind}-${index + 1}.${ext}`;
+}
+
+async function downloadOriginal(src, index, button) {
+  const url = toOriginalUrl(src);
+  button.disabled = true;
+  try {
+    // Fetch as a blob: the download attribute is ignored on cross-site links
+    const res = await fetch(url, { credentials: "omit" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const blobUrl = URL.createObjectURL(await res.blob());
+    const link = Object.assign(document.createElement("a"), { href: blobUrl, download: downloadFileName(url, index) });
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+  } catch {
+    window.open(url, "_blank", "noopener"); // Fallback: open the full-size image in a new tab
+  } finally {
+    button.disabled = false;
+  }
+}
+
+function downloadIcon() {
+  return `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M2.5 13.5h11"/></svg>`;
 }
 
 function gridIcon() {

@@ -276,6 +276,7 @@
 }
 
 .lb-btn-mode,
+.lb-btn-download,
 .lb-close {
   background: none;
   border: none;
@@ -290,6 +291,7 @@
 }
 
 .lb-btn-mode:hover,
+.lb-btn-download:hover,
 .lb-close:hover { background: #2a2a2a; color: #fff; }
 
 .lb-close { font-size: 14px; }
@@ -477,3 +479,15 @@
   border-radius: 4px;
   z-index: 2;
 }
+
+/* Director's Cut: download button state */
+.lb-btn-download:disabled { opacity: 0.5; cursor: progress; }
+
+/* Director's Cut: language filter + Group similar link under the tabs */
+.tmdb-panel-filters { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 0 8px; }
+.tmdb-lang-select {
+  min-width: 0; max-width: 70%; padding: 3px 6px; border: 1px solid #456; border-radius: 3px;
+  background: #2c3440; color: #def; font: inherit; font-size: 12px;
+}
+.tmdb-group-link { flex: none; color: #9ab; font-size: 12px; }
+.tmdb-group-link:hover { color: #fff; }

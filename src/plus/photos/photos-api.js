@@ -45,19 +45,18 @@ const DCPhotosApi = (() => {
 				DC.tmdb(`${mediaType}/${tmdbId}/credits`).catch(() => null),
 			]);
 
-			const formatList = (items, size) => items.slice(0, 24).map(img => `${IMAGE_BASE}/${size}${img.file_path}`);
+			// Director's Cut: no 24-image cap, every language kept (the panel filters by language).
+			// Display sizes stay modest (w1280 / w780); the download button swaps in "original".
+			const meta = {};
+			const formatList = (items, size) => items.map(img => {
+				const url = `${IMAGE_BASE}/${size}${img.file_path}`;
+				meta[url] = { lang: img.iso_639_1 ?? null, width: img.width, height: img.height, filePath: img.file_path };
+				return url;
+			});
+			const byVotes = (a, b) => b.vote_average - a.vote_average || b.vote_count - a.vote_count;
 
-			const backdrops = dedupByPath(
-				(imgData.backdrops || [])
-					.filter(img => img.iso_639_1 === null)
-					.sort((a, b) => b.vote_average - a.vote_average)
-			);
-
-			const posters = dedupByPath(
-				(imgData.posters || [])
-					.filter(img => img.iso_639_1 === null || img.iso_639_1 === 'en')
-					.sort((a, b) => b.vote_average - a.vote_average)
-			);
+			const backdrops = dedupByPath((imgData.backdrops || []).sort(byVotes));
+			const posters = dedupByPath((imgData.posters || []).sort(byVotes));
 
 			const cast = [];
 			if (creditsData) {
@@ -76,8 +75,10 @@ const DCPhotosApi = (() => {
 				ok: true,
 				title: movie.title || movie.name,
 				tmdbId,
-				backdrops: formatList(backdrops, 'original'),
+				mediaType,
+				backdrops: formatList(backdrops, 'w1280'),
 				posters: formatList(posters, 'w780'),
+				meta,
 				cast,
 			};
 		} catch {
