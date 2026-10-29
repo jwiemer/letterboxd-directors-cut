@@ -223,3 +223,5 @@
 .sidebar .imdb-ratings > .rating-histogram-extras { margin-top: -3px; }
 /* Metacritic: its badge row sits 5px low (inline margin-top) */
 .sidebar .meta-ratings > .meta-must-see { margin-top: 0 !important; }
+/* Metacritic's Show details was placed for its old 20px logo (top: 10px upstream); with a text label it sits 5px low */
+.sidebar .meta-ratings .show-details { top: 5px !important; }
