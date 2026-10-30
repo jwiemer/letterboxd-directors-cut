@@ -5,7 +5,7 @@ index 75bf471..56a336f 100644
 @@ -19,7 +19,7 @@ jobs:
          with:
            node-version: 22
- 
+
 -      - name: Build Chrome and Firefox
 +      - name: Build Chrome, Firefox, and Safari
          working-directory: src
@@ -17,12 +17,12 @@ index 75bf471..56a336f 100644
            ./build.sh firefox
 +          ./build.sh safari
 +          node --test ../testing/safari/*.test.mjs
- 
+
        - name: Zip
          run: |
            (cd src/dist/chrome && zip -qr "$GITHUB_WORKSPACE/directors-cut-chrome-${GITHUB_REF_NAME}.zip" .)
            (cd src/dist/firefox && zip -qr "$GITHUB_WORKSPACE/directors-cut-firefox-${GITHUB_REF_NAME}.zip" .)
- 
+
 +          (cd src/dist/safari && zip -qr "$GITHUB_WORKSPACE/directors-cut-safari-${GITHUB_REF_NAME}.zip" .)
 +
        - name: Publish release
