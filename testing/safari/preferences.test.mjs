@@ -5,7 +5,7 @@ import { readFile } from 'node:fs/promises';
 const prefs = await readFile(new URL('../../src/plus/safari-preferences.js', import.meta.url), 'utf8');
 const background = await readFile(new URL('../../src/common/background.js', import.meta.url), 'utf8');
 
-test('Safari disables the unwanted providers once, keeping core preferences and later opt-ins', () => {
+test('Safari excludes unwanted providers while keeping core preferences', () => {
   const c = vm.createContext({});
   vm.runInContext(prefs, c);
   const settings = { 'imdb-enabled': true, 'metacritic-enabled': true, 'dc-live-css-enabled': true, 'mal-enabled': true };
@@ -17,7 +17,7 @@ test('Safari disables the unwanted providers once, keeping core preferences and 
   assert.equal(settings['dc-live-css-enabled'], true);
   settings['mal-enabled'] = true;
   vm.runInContext('DCSafariPreferences.apply(settings)', c);
-  assert.equal(settings['mal-enabled'], true);
+  assert.equal(settings['mal-enabled'], false);
 });
 
 test('Background checks origin patterns and reports network failure to the waiting page', async () => {

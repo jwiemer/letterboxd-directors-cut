@@ -245,7 +245,7 @@ async function InitDefaultSettings() {
         if (options[key] == null) options[key] = value;
     }
 
-    // Apply the Safari provider preset once, preserving other saved preferences.
+    // Apply the personal Safari build exclusions, preserving other preferences.
     if (typeof DCSafariPreferences !== 'undefined') DCSafariPreferences.apply(options);
     // Save
     await browser.storage.sync.set({ options });
@@ -269,7 +269,7 @@ function getDefaultRatingsOrder() {
         'cinemascore'
     ];
 
-    return defaultOrder;
+    return typeof DCSafariPreferences !== 'undefined' ? defaultOrder.filter(key => !DCSafariPreferences.ratings.includes(key)) : defaultOrder;
 }
 
 function UpdateRatingsOrder(currentOrder) {

@@ -207,6 +207,8 @@
 		const anchor = friends ?? reviews;
 		if (anchor) anchor.before(section);
 		else document.querySelector('.col-main')?.append(section);
+		const gallery = document.querySelector('#tmdb-photo-panel:not(.is-portrait)');
+		if (gallery) section.after(gallery);
 
 		// Friends' activity can load after us; move above it when it shows up
 		if (!friends) {
@@ -214,6 +216,8 @@
 				const late = findFriendsSection();
 				if (late && late.previousElementSibling !== section) {
 					late.before(section);
+					const gallery = document.querySelector('#tmdb-photo-panel:not(.is-portrait)');
+					if (gallery) section.after(gallery);
 					observer.disconnect();
 				}
 			});

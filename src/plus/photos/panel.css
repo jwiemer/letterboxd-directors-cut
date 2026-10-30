@@ -597,3 +597,39 @@
   #tmdb-lightbox .lb-filters { margin: 0; gap: 8px; }
   #tmdb-lightbox .lb-info .lb-set { width: auto; min-height: 44px; }
 }
+
+/* Personal Safari layout refinements. */
+@media (max-width: 600px) {
+  body:has(> .topnav) div:has(> label:not(.radio) + .setting) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 12px;
+    row-gap: 6px;
+    padding-block: 8px;
+  }
+  body:has(> .topnav) div:has(> label:not(.radio) + .setting) > label:not(.radio) {
+    width: auto; min-width: 0; overflow-wrap: normal; word-break: normal;
+  }
+  body:has(> .topnav) div:has(> label:not(.radio) + .setting) > :is(h3, h4, p, div, hr),
+  body:has(> .topnav) div:has(> label:not(.radio) + .setting) > a.hyperlink {
+    grid-column: 1 / -1; width: auto; max-width: 100%; margin: 0 0 6px;
+  }
+  #tmdb-photo-panel .tmdb-set-row .tmdb-set,
+  #tmdb-lightbox .lb-info .lb-set {
+    box-sizing: border-box; flex: 0 0 52px;
+    width: 52px !important; min-width: 52px !important; max-width: 52px !important;
+    height: 28px !important; min-height: 28px !important; max-height: 28px !important;
+    margin: 0; padding: 0 !important; line-height: 28px; font-size: 12px;
+  }
+  #tmdb-photo-panel .tmdb-set-row .tmdb-open-grid {
+    box-sizing: border-box; flex: 0 0 32px;
+    width: 32px; min-width: 32px !important; max-width: 32px;
+    height: 28px; min-height: 28px !important; max-height: 28px;
+  }
+  #tmdb-photo-panel .tmdb-set-row .tmdb-lang-select { min-height: 28px; max-width: calc(100% - 100px); }
+  #tmdb-photo-panel .tmdb-set-row { justify-content: flex-start; margin-bottom: 10px; }
+  #tmdb-photo-panel .tmdb-carousel.is-poster { margin-inline: 0; }
+}
+/* Existing installs also lose redundant footer links once those scores render. */
+body:has(.meta-ratings) .text-footer .meta-button,
+body:has(.tomato-ratings) .text-footer .tomato-button { display: none !important; }

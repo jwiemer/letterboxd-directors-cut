@@ -78,14 +78,13 @@ function getTmdbPersonId() {
 }
 
 function insertFilmPanel(panel) {
-  const sidebar =
-    document.querySelector(".col-sidebar") ||
-    document.querySelector("#sidebar") ||
-    document.querySelector("[data-sidebar]");
-  if (sidebar) {
-    sidebar.appendChild(panel);
-    return;
-  }
+  const extras = document.querySelector('.dc-extras');
+  if (extras) { extras.after(panel); return; }
+  // While Extras loads (or when disabled), use the main content flow.
+  const anchor = document.querySelector('section.film-recent-reviews, section.js-popular-reviews');
+  if (anchor) { anchor.before(panel); return; }
+  const main = document.querySelector('.col-main');
+  if (main) { main.append(panel); return; }
   const imdbLink = document.querySelector('a[href*="imdb.com/title/"]');
   imdbLink?.closest("p,section,div")?.insertAdjacentElement("afterend", panel);
 }

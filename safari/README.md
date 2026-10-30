@@ -55,11 +55,19 @@ Keep this branch available: installed builds use its fixed URL even if the pull 
 
 After installing the updated build, open Director’s Cut settings → **Director’s Cut → Ratings and links access**, tap **Allow ratings and links access**, then reload the film. This requests access for the active core providers; Safari may require allowing those websites in its extension settings too. The script now checks origin match patterns and returns a response on network failure.
 
-The Safari update disables MyAnimeList, AniList, SensCritique, MUBI, Douban, FilmAffinity, Simkl, AlloCiné, Kinopoisk, Filmarks and Does the Dog Die once for existing users and on first install. Other preferences are retained. Users can turn any provider back on afterward; the migration does not repeat. Disabled providers do not request their data or create missing-permission warnings.
+The personal Safari build excludes MyAnimeList, AniList, SensCritique, MUBI, Douban, FilmAffinity, Simkl, AlloCiné, Kinopoisk, Filmarks and Does the Dog Die. Their settings groups, permissions and provider integrations are omitted at build time, and saved/imported flags cannot reactivate them. Shared sources retain these integrations for the Chrome/Firefox builds. Other preferences are retained.
 
 Ratings and external links no longer wait for mobile account controls, and changed rating tooltip text no longer stops film initialization. Both footer-link insertion paths handle the mobile markup. The settings width and gallery control fixes are bundled and also included in the shared GitHub stylesheet, so their CSS can reach the previous build without reinstalling. The provider, permission and initialization fixes require the new installation.
 
 For the additional browser regression check, install the existing dependencies in `testing/`, install its Playwright Chromium browser, build Safari, then run `node testing/safari/mobile.browser.mjs` from the repo root. It uses a 393px phone viewport and a local film fixture with a deliberately changed tooltip and delayed account markup. A mocked IMDb response verifies chart rendering; the test also checks footer links, settings overflow and gallery button widths. This fixture does not validate live rating-site responses or iPhone Safari’s permission prompts.
+
+## Layout refinements (0.2.9)
+
+Film Stills/Posters now follow Extras in the main content, including when either section or friends’ activity loads late. If Extras is disabled or has no videos, the gallery uses the main content flow near reviews. Contributor galleries keep their existing placement.
+
+Set controls in the film panel and lightbox are 52 × 28 pixels on phones. Settings use two-column rows for labels/controls, with help paragraphs on a separate full-width line. This avoids compressing the Cast Extras label into individual letters. Rotten Tomatoes and Metacritic footer links are omitted when their ratings are enabled; their rating headings still link to those sites.
+
+The personal provider exclusions are implemented by `src/safari-profile.mjs`, used by both the Safari bundler and package assembly. The browser regression test uses the built settings page, checks the Cast Extras label width and help placement, verifies the exact gallery control dimensions, checks late-loading section order, and ensures redundant RT/Meta footer buttons are absent.
 
 ## Validation before release
 

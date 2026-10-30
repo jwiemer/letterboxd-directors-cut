@@ -43,22 +43,10 @@
     "https://www.boxofficemojo.com/*",
     "https://webapp.cinemascore.com/*",
     "https://query.wikidata.org/*",
-    "https://www.metacritic.com/*",
-    "https://graphql.anilist.co/*"
+    "https://www.metacritic.com/*"
   ],
   "optional_host_permissions": [
-    "https://api.mubi.com/*",
-    "https://apollo.senscritique.com/*",
-    "https://*.filmaffinity.com/*",
-    "https://www.allocine.fr/*",
-    "https://api.simkl.com/*",
     "https://www.google.com/search*",
-    "https://www.doesthedogdie.com/*",
-    "https://markuapi.kabk.dev/*",
-    "https://kinopoiskapiunofficial.tech/api/*",
-    "https://api.douban.com/*",
-    "https://api.mydramalist.com/*",
-    "https://api.tenrai.org/*",
     "https://raw.githubusercontent.com/*"
   ],
   "background": {

@@ -1,4 +1,5 @@
 import MagicString from 'magic-string';
+import { safariProfilePlugin } from '../safari-profile.mjs';
 
 import { exec } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -129,6 +130,7 @@ const builds = [
 	{
 		input: 'user.js/letterboxd-extras.js',
 		plugins: [
+			safariProfilePlugin(),
 			typescript( { include: [ '**/*.ts' ] } ),
 			css( {
 				transform: code => code.replace( /\r\n/g, '\n' )

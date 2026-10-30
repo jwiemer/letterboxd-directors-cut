@@ -15,7 +15,7 @@ DIST_DIR="$SOURCE_DIR/dist/$TARGET"
 cd "$SOURCE_DIR"
 
 # Bundle using the installed dependency; no package manager or network needed here.
-./node_modules/.bin/rollup -c user.js/rollup.config.js
+DC_BUILD_TARGET="$TARGET" ./node_modules/.bin/rollup -c user.js/rollup.config.js
 
 # Clean previous build, then copy common files, the bundle, and the target's manifest
 rm -rf "$DIST_DIR"
@@ -25,6 +25,10 @@ cp "$SOURCE_DIR/user.js/build/"* "$DIST_DIR/"
 cp "$SOURCE_DIR/$TARGET/"* "$DIST_DIR/"
 # Director's Cut features (src/plus/) ship as separate content scripts
 rsync -a "$SOURCE_DIR/plus/" "$DIST_DIR/plus/"
+
+if [[ "$TARGET" == "safari" ]]; then
+  node "$SOURCE_DIR/safari-profile.mjs" "$DIST_DIR"
+fi
 
 # Director's Cut version: the manifest keeps upstream's number (so merges stay clean);
 # the built copy gets ours from plus/VERSION, or DC_VERSION when the release Action sets it from the tag

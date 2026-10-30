@@ -1497,6 +1497,8 @@ const letterboxd = {
 		},
 
 		addLink(url, text, prefix) {
+            if ((prefix === 'meta' && letterboxd.storage.get('metacritic-enabled') === true) ||
+                (prefix === 'tomato' && letterboxd.storage.get('tomato-enabled') === true)) return;
 			if (url === null || url === "") {
 				return;
 			}
