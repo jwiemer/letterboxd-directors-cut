@@ -8,6 +8,8 @@ if (isChrome)
     var browser = chrome;
 
 browser.runtime.onMessage.addListener((msg, sender, response) => {
+    // The Safari CSS updater has its own asynchronous responder.
+    if (msg.name === "DC_LIVE_CSS") return false;
     if (msg.name == null) {
         msg.name = "";
     }

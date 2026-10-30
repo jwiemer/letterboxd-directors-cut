@@ -58,11 +58,13 @@
     "https://kinopoiskapiunofficial.tech/api/*",
     "https://api.douban.com/*",
     "https://api.mydramalist.com/*",
-    "https://api.tenrai.org/*"
+    "https://api.tenrai.org/*",
+    "https://raw.githubusercontent.com/*"
   ],
   "background": {
     "scripts": [
-      "background.js"
+      "background.js",
+      "plus/live-styles-background.js"
     ]
   },
   "content_scripts": [
@@ -86,7 +88,8 @@
         "plus/extras.js",
         "plus/photos/photos-api.js",
         "plus/photos/content.js",
-        "plus/commonsense.js"
+        "plus/commonsense.js",
+        "plus/live-styles.js"
       ],
       "css": [
         "plus/plus.css",

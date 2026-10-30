@@ -42,6 +42,20 @@
     <!-- Director's Cut (src/plus/) -->
     <div id="directors-cut">
         <h3>Director's Cut</h3>
+        <div id="dc-live-css-settings" hidden>
+            <h4>GitHub CSS updates</h4>
+            <div>
+                <label for="dc-live-css-enabled">Get styling updates from GitHub:</label>
+                <input type="checkbox" id="dc-live-css-enabled" class="setting" permission="https://raw.githubusercontent.com/*"/>
+            </div>
+            <div class="div-request-permission" style="display:none">
+                <label>GitHub access is needed.</label>
+                <input type="button" class="request-permission" permissionTarget="dc-live-css-enabled" value="Allow GitHub access"/>
+            </div>
+            <p class="info-tip">Updates colors, spacing and layout from the shared stylesheet. Checks when Letterboxd loads, at most every five minutes. Turning this off restores bundled styles.</p>
+            <button type="button" id="dc-live-css-check">Check for style updates</button>
+            <p id="dc-live-css-status" class="info-tip" role="status" aria-live="polite"></p>
+        </div>
         <div>
             <h4>Extras carousel</h4>
             <div>
@@ -670,6 +684,8 @@
 
     <hr width="100%">
 
+    <script src="plus/live-styles.js"></script>
+    <script src="plus/live-styles-settings.js"></script>
     <script src="options.js"></script>
     <script src="plus/options-plus.js"></script>
 </body>

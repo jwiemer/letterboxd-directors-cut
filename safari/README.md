@@ -39,6 +39,18 @@ xcodebuild -project 'safari/Directors Cut/Directors Cut.xcodeproj' \
 - Cast hover photos activate only when a hover-capable input is available. On a phone, tap a person’s name for their page and photo gallery.
 - Safari settings are stored on the device; cross-device settings synchronization is not promised.
 
+## GitHub CSS updates
+
+After installing this build once, open Director’s Cut settings from Safari’s page menu. Under **GitHub CSS updates**, turn on **Get styling updates from GitHub** and allow access to `raw.githubusercontent.com`. It is off until you enable it.
+
+The shared stylesheet is [`safari/styles/live.css`](styles/live.css) on the **safari-ios** branch of `jwiemer/letterboxd-directors-cut`. Edit and commit that file on GitHub to deliver CSS changes to this build. Keep its first line unchanged. The same overlay is applied to Letterboxd pages and the extension settings page, so use selectors that target the intended elements.
+
+Checks run when a page opens, at most every five minutes. To bypass that interval, open the extension settings and tap **Check for style updates**, then reload Letterboxd (or reopen the settings page). GitHub’s own caching may add a short delay. This does not download JavaScript, change the app’s signing expiration, or install a new app version.
+
+Bundled styles always load first. The downloaded CSS adds overrides after them. Offline, the last successful download is reused; without a saved download, bundled styles remain. Turn off the toggle to remove the overlay and return to bundled styles. An empty overlay restores the baseline for everyone with updates enabled; do not remove the required header line. Files over 128 KiB, missing the header, or containing `@import` are ignored and do not replace the last successful download.
+
+Keep this branch available: installed builds use its fixed URL even if the pull request is later merged. Moving the source URL requires another extension build. Everyone who installs this version and enables this option uses the same public stylesheet.
+
 ## Validation before release
 
 The automated package checks verify shipped resources, manifest configuration, version consistency, and image-saving behavior on iPhone, desktop-mode iPad, and desktop. They do not prove that Safari grants permissions, streams YouTube videos, or accepts Letterboxd account actions correctly.
