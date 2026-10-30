@@ -1,0 +1,18 @@
+ :root { color-scheme: dark; font: -apple-system-body; background: #14181c; color: #9ab; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 36px 24px; padding-bottom: max(36px, env(safe-area-inset-bottom)); }
+main { max-width: 520px; margin: auto; }
+.icon { display: block; border-radius: 18px; margin-bottom: 28px; }
+.eyebrow { color: #00e054; letter-spacing: .18em; font-size: 11px; font-weight: 700; margin: 0 0 8px; }
+h1 { color: #def; font: -apple-system-title1; font-weight: 700; margin: 0; }
+.intro { color: #def; margin: 8px 0 20px; }
+p, li { line-height: 1.5; }
+section { margin: 28px 0; padding: 22px; border-radius: 16px; background: #202830; }
+h2 { color: #def; font: -apple-system-headline; margin: 0 0 16px; }
+ol { padding-left: 20px; margin: 0; }
+li + li { margin-top: 14px; }
+strong { color: #def; }
+.button { display: block; background: #00e054; border-radius: 10px; padding: 16px; color: #102018; text-align: center; font-weight: 700; text-decoration: none; }
+.hint, footer { font: -apple-system-footnote; line-height: 1.5; }
+.hint { margin-top: 20px; }
+footer { margin-top: 32px; color: #789; }

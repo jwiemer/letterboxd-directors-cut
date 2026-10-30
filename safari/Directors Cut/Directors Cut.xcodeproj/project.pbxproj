@@ -1,0 +1,672 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 110;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6554641A3094182F0092934E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655464193094182F0092934E /* AppDelegate.swift */; };
+		6554641E3094182F0092934E /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = 6554641C3094182F0092934E /* Main.html */; };
+		655464203094182F0092934E /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6554641F3094182F0092934E /* Icon.png */; };
+		655464223094182F0092934E /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = 655464213094182F0092934E /* Style.css */; };
+		655464243094182F0092934E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655464233094182F0092934E /* SceneDelegate.swift */; };
+		655464263094182F0092934E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655464253094182F0092934E /* ViewController.swift */; };
+		655464293094182F0092934E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 655464273094182F0092934E /* LaunchScreen.storyboard */; };
+		6554642C3094182F0092934E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6554642A3094182F0092934E /* Main.storyboard */; };
+		65546434309418340092934E /* Directors Cut Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 65546433309418340092934E /* Directors Cut Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		65546439309418340092934E /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65546438309418340092934E /* SafariWebExtensionHandler.swift */; };
+		6554643B309418340092934E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6554642D309418330092934E /* Assets.xcassets */; };
+		6554645E309418350092934E /* additional.js in Resources */ = {isa = PBXBuildFile; fileRef = 65546446309418350092934E /* additional.js */; };
+		6554645F309418350092934E /* icon16.png in Resources */ = {isa = PBXBuildFile; fileRef = 65546447309418350092934E /* icon16.png */; };
+		65546460309418350092934E /* letterboxd-extras.user.js in Resources */ = {isa = PBXBuildFile; fileRef = 65546448309418350092934E /* letterboxd-extras.user.js */; };
+		65546461309418350092934E /* google2letterboxd.js in Resources */ = {isa = PBXBuildFile; fileRef = 65546449309418350092934E /* google2letterboxd.js */; };
+		65546462309418350092934E /* background.js in Resources */ = {isa = PBXBuildFile; fileRef = 6554644A309418350092934E /* background.js */; };
+		65546463309418350092934E /* images in Resources */ = {isa = PBXBuildFile; fileRef = 6554644B309418350092934E /* images */; };
+		65546464309418350092934E /* icon48.png in Resources */ = {isa = PBXBuildFile; fileRef = 6554644C309418350092934E /* icon48.png */; };
+		65546465309418350092934E /* options.js in Resources */ = {isa = PBXBuildFile; fileRef = 6554644D309418350092934E /* options.js */; };
+		65546466309418350092934E /* icon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 6554644E309418350092934E /* icon512.png */; };
+		65546467309418350092934E /* custom_list.js in Resources */ = {isa = PBXBuildFile; fileRef = 6554644F309418350092934E /* custom_list.js */; };
+		65546468309418350092934E /* icon128.png in Resources */ = {isa = PBXBuildFile; fileRef = 65546450309418350092934E /* icon128.png */; };
+		65546469309418350092934E /* icon64.png in Resources */ = {isa = PBXBuildFile; fileRef = 65546451309418350092934E /* icon64.png */; };
+		6554646A309418350092934E /* icon96.png in Resources */ = {isa = PBXBuildFile; fileRef = 65546452309418350092934E /* icon96.png */; };
+		6554646B309418350092934E /* polyfill.js in Resources */ = {isa = PBXBuildFile; fileRef = 65546453309418350092934E /* polyfill.js */; };
+		6554646C309418350092934E /* colour_scheme.css in Resources */ = {isa = PBXBuildFile; fileRef = 65546454309418350092934E /* colour_scheme.css */; };
+		6554646D309418350092934E /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 65546455309418350092934E /* manifest.json */; };
+		6554646E309418350092934E /* icon256.png in Resources */ = {isa = PBXBuildFile; fileRef = 65546456309418350092934E /* icon256.png */; };
+		6554646F309418350092934E /* custom_list.html in Resources */ = {isa = PBXBuildFile; fileRef = 65546457309418350092934E /* custom_list.html */; };
+		65546470309418350092934E /* options.html in Resources */ = {isa = PBXBuildFile; fileRef = 65546458309418350092934E /* options.html */; };
+		65546471309418350092934E /* data in Resources */ = {isa = PBXBuildFile; fileRef = 65546459309418350092934E /* data */; };
+		65546472309418350092934E /* options.css in Resources */ = {isa = PBXBuildFile; fileRef = 6554645A309418350092934E /* options.css */; };
+		65546473309418350092934E /* custom_list.css in Resources */ = {isa = PBXBuildFile; fileRef = 6554645B309418350092934E /* custom_list.css */; };
+		65546474309418350092934E /* icon32.png in Resources */ = {isa = PBXBuildFile; fileRef = 6554645C309418350092934E /* icon32.png */; };
+		65546475309418350092934E /* plus in Resources */ = {isa = PBXBuildFile; fileRef = 6554645D309418350092934E /* plus */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		65546435309418340092934E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6554640E3094182F0092934E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 65546432309418340092934E;
+			remoteInfo = "Directors Cut Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		65546441309418340092934E /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = PlugIns;
+			files = (
+				65546434309418340092934E /* Directors Cut Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		655464163094182F0092934E /* Directors Cut.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Directors Cut.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		655464193094182F0092934E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		6554641D3094182F0092934E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/Main.html; sourceTree = "<group>"; };
+		6554641F3094182F0092934E /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		655464213094182F0092934E /* Style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = Style.css; sourceTree = "<group>"; };
+		655464233094182F0092934E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		655464253094182F0092934E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		655464283094182F0092934E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		6554642B3094182F0092934E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6554642D309418330092934E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6554642E309418330092934E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		65546433309418340092934E /* Directors Cut Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Directors Cut Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		65546438309418340092934E /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		6554643A309418340092934E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		65546446309418350092934E /* additional.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = additional.js; path = ../../../src/dist/safari/additional.js; sourceTree = "<group>"; };
+		65546447309418350092934E /* icon16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon16.png; path = ../../../src/dist/safari/icon16.png; sourceTree = "<group>"; };
+		65546448309418350092934E /* letterboxd-extras.user.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = "letterboxd-extras.user.js"; path = "../../../src/dist/safari/letterboxd-extras.user.js"; sourceTree = "<group>"; };
+		65546449309418350092934E /* google2letterboxd.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = google2letterboxd.js; path = ../../../src/dist/safari/google2letterboxd.js; sourceTree = "<group>"; };
+		6554644A309418350092934E /* background.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = background.js; path = ../../../src/dist/safari/background.js; sourceTree = "<group>"; };
+		6554644B309418350092934E /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; name = images; path = ../../../src/dist/safari/images; sourceTree = "<group>"; };
+		6554644C309418350092934E /* icon48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon48.png; path = ../../../src/dist/safari/icon48.png; sourceTree = "<group>"; };
+		6554644D309418350092934E /* options.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = options.js; path = ../../../src/dist/safari/options.js; sourceTree = "<group>"; };
+		6554644E309418350092934E /* icon512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon512.png; path = ../../../src/dist/safari/icon512.png; sourceTree = "<group>"; };
+		6554644F309418350092934E /* custom_list.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = custom_list.js; path = ../../../src/dist/safari/custom_list.js; sourceTree = "<group>"; };
+		65546450309418350092934E /* icon128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon128.png; path = ../../../src/dist/safari/icon128.png; sourceTree = "<group>"; };
+		65546451309418350092934E /* icon64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon64.png; path = ../../../src/dist/safari/icon64.png; sourceTree = "<group>"; };
+		65546452309418350092934E /* icon96.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon96.png; path = ../../../src/dist/safari/icon96.png; sourceTree = "<group>"; };
+		65546453309418350092934E /* polyfill.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = polyfill.js; path = ../../../src/dist/safari/polyfill.js; sourceTree = "<group>"; };
+		65546454309418350092934E /* colour_scheme.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = colour_scheme.css; path = ../../../src/dist/safari/colour_scheme.css; sourceTree = "<group>"; };
+		65546455309418350092934E /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = ../../../src/dist/safari/manifest.json; sourceTree = "<group>"; };
+		65546456309418350092934E /* icon256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon256.png; path = ../../../src/dist/safari/icon256.png; sourceTree = "<group>"; };
+		65546457309418350092934E /* custom_list.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = custom_list.html; path = ../../../src/dist/safari/custom_list.html; sourceTree = "<group>"; };
+		65546458309418350092934E /* options.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = options.html; path = ../../../src/dist/safari/options.html; sourceTree = "<group>"; };
+		65546459309418350092934E /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = ../../../src/dist/safari/data; sourceTree = "<group>"; };
+		6554645A309418350092934E /* options.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = options.css; path = ../../../src/dist/safari/options.css; sourceTree = "<group>"; };
+		6554645B309418350092934E /* custom_list.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = custom_list.css; path = ../../../src/dist/safari/custom_list.css; sourceTree = "<group>"; };
+		6554645C309418350092934E /* icon32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon32.png; path = ../../../src/dist/safari/icon32.png; sourceTree = "<group>"; };
+		6554645D309418350092934E /* plus */ = {isa = PBXFileReference; lastKnownFileType = folder; name = plus; path = ../../../src/dist/safari/plus; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		655464133094182F0092934E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		65546430309418340092934E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6554640D3094182F0092934E = {
+			isa = PBXGroup;
+			children = (
+				655464183094182F0092934E /* Directors Cut */,
+				65546437309418340092934E /* Directors Cut Extension */,
+				655464173094182F0092934E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		655464173094182F0092934E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				655464163094182F0092934E /* Directors Cut.app */,
+				65546433309418340092934E /* Directors Cut Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		655464183094182F0092934E /* Directors Cut */ = {
+			isa = PBXGroup;
+			children = (
+				655464193094182F0092934E /* AppDelegate.swift */,
+				655464233094182F0092934E /* SceneDelegate.swift */,
+				655464253094182F0092934E /* ViewController.swift */,
+				655464273094182F0092934E /* LaunchScreen.storyboard */,
+				6554642A3094182F0092934E /* Main.storyboard */,
+				6554642D309418330092934E /* Assets.xcassets */,
+				6554642E309418330092934E /* Info.plist */,
+				6554641B3094182F0092934E /* Resources */,
+			);
+			path = "Directors Cut";
+			sourceTree = "<group>";
+		};
+		6554641B3094182F0092934E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6554641C3094182F0092934E /* Main.html */,
+				6554641F3094182F0092934E /* Icon.png */,
+				655464213094182F0092934E /* Style.css */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		65546437309418340092934E /* Directors Cut Extension */ = {
+			isa = PBXGroup;
+			children = (
+				65546445309418350092934E /* Resources */,
+				65546438309418340092934E /* SafariWebExtensionHandler.swift */,
+				6554643A309418340092934E /* Info.plist */,
+			);
+			path = "Directors Cut Extension";
+			sourceTree = "<group>";
+		};
+		65546445309418350092934E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				65546446309418350092934E /* additional.js */,
+				65546447309418350092934E /* icon16.png */,
+				65546448309418350092934E /* letterboxd-extras.user.js */,
+				65546449309418350092934E /* google2letterboxd.js */,
+				6554644A309418350092934E /* background.js */,
+				6554644B309418350092934E /* images */,
+				6554644C309418350092934E /* icon48.png */,
+				6554644D309418350092934E /* options.js */,
+				6554644E309418350092934E /* icon512.png */,
+				6554644F309418350092934E /* custom_list.js */,
+				65546450309418350092934E /* icon128.png */,
+				65546451309418350092934E /* icon64.png */,
+				65546452309418350092934E /* icon96.png */,
+				65546453309418350092934E /* polyfill.js */,
+				65546454309418350092934E /* colour_scheme.css */,
+				65546455309418350092934E /* manifest.json */,
+				65546456309418350092934E /* icon256.png */,
+				65546457309418350092934E /* custom_list.html */,
+				65546458309418350092934E /* options.html */,
+				65546459309418350092934E /* data */,
+				6554645A309418350092934E /* options.css */,
+				6554645B309418350092934E /* custom_list.css */,
+				6554645C309418350092934E /* icon32.png */,
+				6554645D309418350092934E /* plus */,
+			);
+			name = Resources;
+			path = "Directors Cut Extension";
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		655464153094182F0092934E /* Directors Cut */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 65546442309418340092934E /* Build configuration list for PBXNativeTarget "Directors Cut" */;
+			buildPhases = (
+				655464123094182F0092934E /* Sources */,
+				655464133094182F0092934E /* Frameworks */,
+				655464143094182F0092934E /* Resources */,
+				65546441309418340092934E /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				65546436309418340092934E /* PBXTargetDependency */,
+			);
+			name = "Directors Cut";
+			productName = "Directors Cut";
+			productReference = 655464163094182F0092934E /* Directors Cut.app */;
+			productType = "com.apple.product-type.application";
+		};
+		65546432309418340092934E /* Directors Cut Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6554643E309418340092934E /* Build configuration list for PBXNativeTarget "Directors Cut Extension" */;
+			buildPhases = (
+				6554642F309418340092934E /* Sources */,
+				65546430309418340092934E /* Frameworks */,
+				65546431309418340092934E /* Resources */,
+			);
+			buildRules = (
+			);
+			name = "Directors Cut Extension";
+			productName = "Directors Cut Extension";
+			productReference = 65546433309418340092934E /* Directors Cut Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6554640E3094182F0092934E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2710;
+				LastUpgradeCheck = 2710;
+				TargetAttributes = {
+					655464153094182F0092934E = {
+						CreatedOnToolsVersion = 27.1;
+					};
+					65546432309418340092934E = {
+						CreatedOnToolsVersion = 27.1;
+					};
+				};
+			};
+			buildConfigurationList = 655464113094182F0092934E /* Build configuration list for PBXProject "Directors Cut" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6554640D3094182F0092934E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 655464173094182F0092934E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				655464153094182F0092934E /* Directors Cut */,
+				65546432309418340092934E /* Directors Cut Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		655464143094182F0092934E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+				655464203094182F0092934E /* Icon.png in Resources */,
+				6554642C3094182F0092934E /* Main.storyboard in Resources */,
+				655464293094182F0092934E /* LaunchScreen.storyboard in Resources */,
+				6554641E3094182F0092934E /* Main.html in Resources */,
+				6554643B309418340092934E /* Assets.xcassets in Resources */,
+				655464223094182F0092934E /* Style.css in Resources */,
+			);
+		};
+		65546431309418340092934E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+				65546475309418350092934E /* plus in Resources */,
+				65546463309418350092934E /* images in Resources */,
+				6554646B309418350092934E /* polyfill.js in Resources */,
+				65546465309418350092934E /* options.js in Resources */,
+				65546468309418350092934E /* icon128.png in Resources */,
+				6554646C309418350092934E /* colour_scheme.css in Resources */,
+				6554645E309418350092934E /* additional.js in Resources */,
+				6554645F309418350092934E /* icon16.png in Resources */,
+				65546460309418350092934E /* letterboxd-extras.user.js in Resources */,
+				65546466309418350092934E /* icon512.png in Resources */,
+				65546461309418350092934E /* google2letterboxd.js in Resources */,
+				65546470309418350092934E /* options.html in Resources */,
+				65546472309418350092934E /* options.css in Resources */,
+				6554646E309418350092934E /* icon256.png in Resources */,
+				6554646A309418350092934E /* icon96.png in Resources */,
+				65546469309418350092934E /* icon64.png in Resources */,
+				65546471309418350092934E /* data in Resources */,
+				65546473309418350092934E /* custom_list.css in Resources */,
+				6554646D309418350092934E /* manifest.json in Resources */,
+				65546467309418350092934E /* custom_list.js in Resources */,
+				65546464309418350092934E /* icon48.png in Resources */,
+				65546474309418350092934E /* icon32.png in Resources */,
+				65546462309418350092934E /* background.js in Resources */,
+				6554646F309418350092934E /* custom_list.html in Resources */,
+			);
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		655464123094182F0092934E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				655464263094182F0092934E /* ViewController.swift in Sources */,
+				6554641A3094182F0092934E /* AppDelegate.swift in Sources */,
+				655464243094182F0092934E /* SceneDelegate.swift in Sources */,
+			);
+		};
+		6554642F309418340092934E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				65546439309418340092934E /* SafariWebExtensionHandler.swift in Sources */,
+			);
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		65546436309418340092934E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 65546432309418340092934E /* Directors Cut Extension */;
+			targetProxy = 65546435309418340092934E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6554641C3094182F0092934E /* Main.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6554641D3094182F0092934E /* Base */,
+			);
+			name = Main.html;
+			sourceTree = "<group>";
+		};
+		655464273094182F0092934E /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				655464283094182F0092934E /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		6554642A3094182F0092934E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6554642B3094182F0092934E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6554643C309418340092934E /* Debug configuration for PBXProject "Directors Cut" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		6554643D309418340092934E /* Release configuration for PBXProject "Directors Cut" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6554643F309418340092934E /* Debug configuration for PBXNativeTarget "Directors Cut Extension" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Directors Cut Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Directors Cut Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.2.7;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jwiemer.letterboxd.directorscut.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		65546440309418340092934E /* Release configuration for PBXNativeTarget "Directors Cut Extension" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Directors Cut Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Directors Cut Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.2.7;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jwiemer.letterboxd.directorscut.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		65546443309418340092934E /* Debug configuration for PBXNativeTarget "Directors Cut" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Directors Cut/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Director's Cut";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.2.7;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jwiemer.letterboxd.directorscut;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		65546444309418340092934E /* Release configuration for PBXNativeTarget "Directors Cut" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Directors Cut/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Director's Cut";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.2.7;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jwiemer.letterboxd.directorscut;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		655464113094182F0092934E /* Build configuration list for PBXProject "Directors Cut" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6554643C309418340092934E /* Debug configuration for PBXProject "Directors Cut" */,
+				6554643D309418340092934E /* Release configuration for PBXProject "Directors Cut" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		6554643E309418340092934E /* Build configuration list for PBXNativeTarget "Directors Cut Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6554643F309418340092934E /* Debug configuration for PBXNativeTarget "Directors Cut Extension" */,
+				65546440309418340092934E /* Release configuration for PBXNativeTarget "Directors Cut Extension" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		65546442309418340092934E /* Build configuration list for PBXNativeTarget "Directors Cut" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65546443309418340092934E /* Debug configuration for PBXNativeTarget "Directors Cut" */,
+				65546444309418340092934E /* Release configuration for PBXNativeTarget "Directors Cut" */,
+			);
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6554640E3094182F0092934E /* Project object */;
+	validationLevel = 1;
+}

@@ -78,14 +78,13 @@ function getTmdbPersonId() {
 }
 
 function insertFilmPanel(panel) {
-  const sidebar =
-    document.querySelector(".col-sidebar") ||
-    document.querySelector("#sidebar") ||
-    document.querySelector("[data-sidebar]");
-  if (sidebar) {
-    sidebar.appendChild(panel);
-    return;
-  }
+  const extras = document.querySelector('.dc-extras');
+  if (extras) { extras.after(panel); return; }
+  // While Extras loads (or when disabled), use the main content flow.
+  const anchor = document.querySelector('section.film-recent-reviews, section.js-popular-reviews');
+  if (anchor) { anchor.before(panel); return; }
+  const main = document.querySelector('.col-main');
+  if (main) { main.append(panel); return; }
   const imdbLink = document.querySelector('a[href*="imdb.com/title/"]');
   imdbLink?.closest("p,section,div")?.insertAdjacentElement("afterend", panel);
 }
@@ -607,6 +606,13 @@ function downloadFileName(src, index) {
 
 async function downloadOriginal(src, index, button) {
   const url = toOriginalUrl(src);
+  // iPhone/iPad Safari may block a new tab after an awaited fetch. Open the
+  // original during the tap so Save Image / Share remains available.
+  if (/iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) {
+    window.open(url, "_blank", "noopener");
+    return;
+  }
   button.disabled = true;
   try {
     // Fetch as a blob: the download attribute is ignored on cross-site links
@@ -993,7 +999,7 @@ async function initFilm() {
   }
 
   // Director's Cut: cast hover has its own setting
-  if (await DC.enabled("dc-photos-cast-hover")) {
+  if (matchMedia("(any-hover: hover)").matches && await DC.enabled("dc-photos-cast-hover")) {
     buildCastIndex(filmData.cast);
     attachCastHover();
   }

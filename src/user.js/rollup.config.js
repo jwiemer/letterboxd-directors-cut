@@ -1,4 +1,5 @@
 import MagicString from 'magic-string';
+import { safariProfilePlugin } from '../safari-profile.mjs';
 
 import { exec } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -88,6 +89,9 @@ function callChromeBuilder() {
 	return {
 		writeBundle() {
 
+			// Windows packaging is separate from the Mac/Linux build.sh pipeline.
+			if (process.platform !== 'win32') return;
+
 			const batPath = join( __dirname, '..', 'build.bat' );
 			exec( `"${batPath}" chrome`, ( error, stdout, stderr ) => {
 
@@ -126,6 +130,7 @@ const builds = [
 	{
 		input: 'user.js/letterboxd-extras.js',
 		plugins: [
+			safariProfilePlugin(),
 			typescript( { include: [ '**/*.ts' ] } ),
 			css( {
 				transform: code => code.replace( /\r\n/g, '\n' )

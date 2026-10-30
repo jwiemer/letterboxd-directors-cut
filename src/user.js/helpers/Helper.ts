@@ -398,6 +398,8 @@ export class Helper {
 	 * @param {string} text - The text to be displayed on the button.
 	 */
 	addButtonLink(url: string, text: string) {
+        if ((this.selectorPrefix === 'meta' && this.storage.get('metacritic-enabled') === true) ||
+            (this.selectorPrefix === 'tomato' && this.storage.get('tomato-enabled') === true)) return;
 
 		if (url === null || url === '') {
 			return;
@@ -445,9 +447,10 @@ export class Helper {
 			}
 
 			// Third Attempt
-			const buttons = document.querySelectorAll('p.text-link.text-footer div a.micro-button');
+			const buttons = document.querySelectorAll('.text-link.text-footer a.micro-button');
 			const lastButton = buttons[buttons.length - 1];
-			lastButton.after(button);
+			if (lastButton) lastButton.after(button);
+			else document.querySelector('.text-link.text-footer')?.append(button);
 		}
 
 	}
