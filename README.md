@@ -24,6 +24,12 @@ If you also have Letterboxd Extras installed, turn it off; this includes everyth
 
 Build it yourself (Mac or Linux): `cd src && npm install && ./build.sh chrome`, then load `src/dist/chrome`.
 
+## Safari on iPhone and iPad (prototype)
+
+An iOS Safari port is included in the same repo. It enhances the Letterboxd website in Safari, not the native Letterboxd app. The app targets iOS/iPadOS 17 or later; device testing is still in progress.
+
+Build the extension with `cd src && npm install && ./build.sh safari`, then open `safari/Directors Cut/Directors Cut.xcodeproj` in Xcode. See [Safari setup and testing](safari/README.md) for installation, signing, and the test checklist. A Safari resources ZIP is also produced by the release workflow; it is not directly installable on an iPhone.
+
 ## Pairs well with
 [Enhancer for Letterboxd](https://chromewebstore.google.com/detail/abkbjnimmidipmhhhlcnikkifjpdjdpc) by [leandcesar](https://github.com/leandcesar): friends' rating histograms, search autocomplete, list filters, a random film picker and more. Its source isn't published, so it isn't merged here; install it alongside.
 

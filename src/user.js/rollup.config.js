@@ -88,6 +88,9 @@ function callChromeBuilder() {
 	return {
 		writeBundle() {
 
+			// Windows packaging is separate from the Mac/Linux build.sh pipeline.
+			if (process.platform !== 'win32') return;
+
 			const batPath = join( __dirname, '..', 'build.bat' );
 			exec( `"${batPath}" chrome`, ( error, stdout, stderr ) => {
 

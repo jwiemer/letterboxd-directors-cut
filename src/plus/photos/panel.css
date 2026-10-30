@@ -539,3 +539,29 @@
   border: 0; border-radius: 4px; background: #2c3440; color: #9ab; cursor: pointer;
 }
 .tmdb-set-row .tmdb-open-grid:hover { background: #384250; color: #fff; }
+
+/* Touch devices need visible controls, plus room for Safari's bars and notch. */
+@media (hover: none), (pointer: coarse) {
+  .tmdb-arrow, .tmdb-counter { opacity: 1; }
+  #tmdb-photo-panel .tmdb-tab,
+  .lb-btn-mode, .lb-btn-download, .lb-close,
+  .lb-filters select { min-width: 44px; min-height: 44px; }
+}
+@media (max-width: 600px) {
+  #tmdb-lightbox {
+    box-sizing: border-box;
+    padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right))
+             max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+  }
+  #tmdb-lightbox .lb-shell { max-width: 100%; max-height: 100%; overflow-y: auto; }
+  #tmdb-lightbox .lb-topbar { flex-wrap: wrap; gap: 8px; padding: 8px; }
+  #tmdb-lightbox .lb-topbar-actions { margin-left: auto; }
+  #tmdb-lightbox .lb-filters { flex: 1 1 100%; order: 3; flex-wrap: wrap; }
+  #tmdb-lightbox .lb-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+  #tmdb-lightbox .lb-shell.lb-mode-single .lb-single { max-width: 100%; }
+  #tmdb-lightbox .lb-nav { width: 44px; height: 48px; }
+}
+@supports (height: 100dvh) {
+  #tmdb-lightbox .lb-shell { max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
+  #tmdb-lightbox .lb-shell.lb-mode-grid { height: 92dvh; }
+}

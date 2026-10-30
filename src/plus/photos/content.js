@@ -607,6 +607,13 @@ function downloadFileName(src, index) {
 
 async function downloadOriginal(src, index, button) {
   const url = toOriginalUrl(src);
+  // iPhone/iPad Safari may block a new tab after an awaited fetch. Open the
+  // original during the tap so Save Image / Share remains available.
+  if (/iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) {
+    window.open(url, "_blank", "noopener");
+    return;
+  }
   button.disabled = true;
   try {
     // Fetch as a blob: the download attribute is ignored on cross-site links
@@ -993,7 +1000,7 @@ async function initFilm() {
   }
 
   // Director's Cut: cast hover has its own setting
-  if (await DC.enabled("dc-photos-cast-hover")) {
+  if (matchMedia("(any-hover: hover)").matches && await DC.enabled("dc-photos-cast-hover")) {
     buildCastIndex(filmData.cast);
     attachCastHover();
   }

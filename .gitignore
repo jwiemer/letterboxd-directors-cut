@@ -9,3 +9,8 @@ ff android debug.txt
 **/node_modules
 package-lock.json
 /scripts/*.json
+
+# Local Xcode state and build products
+**/xcuserdata/
+**/*.xcuserstate
+/safari/DerivedData/

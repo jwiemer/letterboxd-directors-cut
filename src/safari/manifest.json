@@ -1,0 +1,109 @@
+{
+  "manifest_version": 3,
+  "name": "Letterboxd: Director's Cut",
+  "description": "Trailers and featurettes, photo galleries, ratings from other sites, and more, right on Letterboxd film pages.",
+  "version": "3.20.5",
+  "action": {
+    "default_title": "Letterboxd: Director's Cut",
+    "default_popup": "options.html?type=action",
+    "default_icon": {
+      "16": "icon16.png",
+      "32": "icon32.png",
+      "48": "icon48.png",
+      "64": "icon64.png",
+      "96": "icon96.png",
+      "128": "icon128.png",
+      "256": "icon256.png",
+      "512": "icon512.png"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "64": "icon64.png",
+    "96": "icon96.png",
+    "128": "icon128.png",
+    "256": "icon256.png",
+    "512": "icon512.png"
+  },
+  "options_ui": {
+    "page": "options.html"
+  },
+  "permissions": [
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://vinciamomedia.com/*",
+    "https://www.imdb.com/*",
+    "https://letterboxd.com/*",
+    "https://*.imdb.com/*",
+    "https://www.rottentomatoes.com/*",
+    "https://www.boxofficemojo.com/*",
+    "https://webapp.cinemascore.com/*",
+    "https://query.wikidata.org/*",
+    "https://www.metacritic.com/*",
+    "https://graphql.anilist.co/*"
+  ],
+  "optional_host_permissions": [
+    "https://api.mubi.com/*",
+    "https://apollo.senscritique.com/*",
+    "https://*.filmaffinity.com/*",
+    "https://www.allocine.fr/*",
+    "https://api.simkl.com/*",
+    "https://www.google.com/search*",
+    "https://www.doesthedogdie.com/*",
+    "https://markuapi.kabk.dev/*",
+    "https://kinopoiskapiunofficial.tech/api/*",
+    "https://api.douban.com/*",
+    "https://api.mydramalist.com/*",
+    "https://api.tenrai.org/*"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://letterboxd.com/*"
+      ],
+      "js": [
+        "polyfill.js",
+        "additional.js",
+        "letterboxd-extras.user.js"
+      ],
+      "run_at": "document_end"
+    },
+    {
+      "matches": [
+        "https://letterboxd.com/*"
+      ],
+      "js": [
+        "plus/dc-core.js",
+        "plus/extras.js",
+        "plus/photos/photos-api.js",
+        "plus/photos/content.js",
+        "plus/commonsense.js"
+      ],
+      "css": [
+        "plus/plus.css",
+        "plus/photos/panel.css"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "images/*",
+        "options.*"
+      ],
+      "matches": [
+        "https://letterboxd.com/*"
+      ]
+    }
+  ]
+}

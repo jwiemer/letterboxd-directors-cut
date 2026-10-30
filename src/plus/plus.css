@@ -225,3 +225,20 @@
 .sidebar .meta-ratings > .meta-must-see { margin-top: 0 !important; }
 /* Metacritic's Show details was placed for its old 20px logo (top: 10px upstream); with a text label it sits 5px low */
 .sidebar .meta-ratings .show-details { top: 5px !important; }
+
+/* Keep the player and its close control reachable in iPhone landscape. */
+@media (max-width: 900px) and (pointer: coarse) {
+  .dc-modal {
+    box-sizing: border-box;
+    padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+             max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  }
+  .dc-modal-body { max-height: 100%; overflow-y: auto; }
+  .dc-modal-close { position: sticky; top: 0; align-self: flex-end; flex: none; width: 44px; height: 44px; }
+  .dc-tab-filters .trigger { min-height: 44px; }
+  .dc-modal-meta { flex-wrap: wrap; }
+}
+@supports (height: 100dvh) {
+  .dc-modal { max-height: 100dvh; }
+  .dc-modal-body { max-height: calc(100dvh - 32px); }
+}

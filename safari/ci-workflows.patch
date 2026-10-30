@@ -1,0 +1,67 @@
+diff --git a/.github/workflows/release.yml b/.github/workflows/release.yml
+index 75bf471..56a336f 100644
+--- a/.github/workflows/release.yml
++++ b/.github/workflows/release.yml
+@@ -19,7 +19,7 @@ jobs:
+         with:
+           node-version: 22
+ 
+-      - name: Build Chrome and Firefox
++      - name: Build Chrome, Firefox, and Safari
+         working-directory: src
+         env:
+           DC_VERSION: ${{ github.ref_name }}
+@@ -28,12 +28,16 @@ jobs:
+           npm install --no-audit --no-fund
+           ./build.sh chrome
+           ./build.sh firefox
++          ./build.sh safari
++          node --test ../testing/safari/*.test.mjs
+ 
+       - name: Zip
+         run: |
+           (cd src/dist/chrome && zip -qr "$GITHUB_WORKSPACE/directors-cut-chrome-${GITHUB_REF_NAME}.zip" .)
+           (cd src/dist/firefox && zip -qr "$GITHUB_WORKSPACE/directors-cut-firefox-${GITHUB_REF_NAME}.zip" .)
+ 
++          (cd src/dist/safari && zip -qr "$GITHUB_WORKSPACE/directors-cut-safari-${GITHUB_REF_NAME}.zip" .)
++
+       - name: Publish release
+         env:
+           GH_TOKEN: ${{ github.token }}
+diff --git a/.github/workflows/safari.yml b/.github/workflows/safari.yml
+new file mode 100644
+index 0000000..aca6bbc
+--- /dev/null
++++ b/.github/workflows/safari.yml
+@@ -0,0 +1,31 @@
++name: Safari iOS
++
++on:
++  pull_request:
++    paths: ['src/**', 'safari/**', 'testing/safari/**', '.github/workflows/safari.yml']
++  workflow_dispatch:
++
++permissions:
++  contents: read
++
++jobs:
++  build:
++    runs-on: macos-latest
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/setup-node@v4
++        with:
++          node-version: 22
++      - name: Build and check Safari resources
++        working-directory: src
++        run: |
++          npm install --no-audit --no-fund
++          ./build.sh safari
++          npm run test-safari
++      - name: Build iOS app and extension
++        run: |
++          xcodebuild -project 'safari/Directors Cut/Directors Cut.xcodeproj' \
++            -scheme 'Directors Cut' -configuration Debug -sdk iphonesimulator \
++            -destination 'generic/platform=iOS Simulator' \
++            -derivedDataPath "$RUNNER_TEMP/directors-cut-derived" \
++            CODE_SIGNING_ALLOWED=NO build
