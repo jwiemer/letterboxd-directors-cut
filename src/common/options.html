@@ -42,6 +42,12 @@
     <!-- Director's Cut (src/plus/) -->
     <div id="directors-cut">
         <h3>Director's Cut</h3>
+        <div id="dc-safari-access" hidden>
+            <h4>Ratings and links access</h4>
+            <p class="info-tip">Safari needs permission to contact your enabled rating sites. IMDb, Rotten Tomatoes, Metacritic and Wikidata supply the ratings and extra links.</p>
+            <button type="button" id="dc-safari-allow">Allow ratings and links access</button>
+            <p id="dc-safari-access-status" class="info-tip" role="status" aria-live="polite"></p>
+        </div>
         <div id="dc-live-css-settings" hidden>
             <h4>GitHub CSS updates</h4>
             <div>
@@ -687,6 +693,7 @@
     <script src="plus/live-styles.js"></script>
     <script src="plus/live-styles-settings.js"></script>
     <script src="options.js"></script>
+    <script src="plus/safari-access.js"></script>
     <script src="plus/options-plus.js"></script>
 </body>
 

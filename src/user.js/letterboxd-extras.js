@@ -189,6 +189,7 @@ const letterboxd = {
 			if (this.running) return;
 
 			this.running = true;
+			try {
 
 			// Get Letterboxd ID
 			if (this.letterboxdID == '' && window.location.pathname.startsWith('/film/')) {
@@ -237,6 +238,10 @@ const letterboxd = {
 
 				letterboxd.helpers.WriteConsoleLog('DEBUG', `Found mobile status ${this.pageState.isMobile}`);
 			}
+
+			// Ordinary ratings/links do not depend on the logged-in watch widget.
+			if (letterboxd.storage.get('hide-ratings-enabled') === 'unchanged') this.pageState.hideRatings = false;
+			if (letterboxd.storage.get('hide-reviews-enabled') === 'false') this.pageState.hideReviews = false;
 
 			// Determine watch status and hide status
 			if (this.pageState.filmWatched == null && this.loggedIn != null){
@@ -394,11 +399,11 @@ const letterboxd = {
 					let regex = new RegExp(/(?:based on )([0-9,.]+)(?:[  ]rating)/);
 
 					if (score.hasAttribute("data-original-title")) {
-						count = score.getAttribute("data-original-title").match(regex)[1];
+						count = score.getAttribute("data-original-title").match(regex)?.[1] ?? 0;
 					} else if (score.hasAttribute("title")) {
-						count = score.getAttribute("title").match(regex)[1];
+						count = score.getAttribute("title").match(regex)?.[1] ?? 0;
 					}
-					count = letterboxd.helpers.cleanNumber(count);
+					count = letterboxd.helpers.cleanNumber(String(count));
 					count = parseInt(count);
 
 					var ratingsUrl = score.getAttribute("href");
@@ -568,7 +573,7 @@ const letterboxd = {
 
 			// First Get the IMDb link 
 			if (this.idsCollected == false && document.querySelector('.micro-button') != null) {
-				if (this.loggedIn == false || document.querySelector('.block-flag-wrapper')) {
+				{ // Public IMDb/TMDB links can be resolved before account controls load.
 					// Gets the IMDb link and ID, and also TMDB id
 					this.resolveExistingButtonLinks();
 					if (this.linksMoved == false)
@@ -580,7 +585,7 @@ const letterboxd = {
 				}
 			}
 
-			if (this.pageState.filmWatched != null){
+			if (this.pageState.filmWatched != null || (this.pageState.hideRatings === false && this.pageState.hideReviews === false)){
 				// Add Cinema Score
 				if (this.cinemascore.data == null && this.letterboxdTitle != null && this.cinemascore.state < 1 && document.querySelector('.sidebar') != null) {
 					this.initCinema(null);
@@ -1160,6 +1165,7 @@ const letterboxd = {
 
 			// Stop
 			return this.stopRunning();
+			} finally { this.running = false; }
 		},
 
 		addWikiButton() {
@@ -1180,7 +1186,7 @@ const letterboxd = {
 
 			// Loop and find IMDB
 			for (var i = 0; i < links.length; i++) {
-				if (links[i].innerHTML === "IMDb") {
+				if (/imdb\.com\/title\//.test(links[i].href)) {
 					// Grab the imdb page
 					imdbLink = links[i].href;
 					if (!imdbLink.includes("https") && imdbLink.includes('http'))
@@ -1194,7 +1200,7 @@ const letterboxd = {
 
 					this.imdbData.url = imdbLink + "/";
 
-				} else if (links[i].innerHTML === "TMDB") {
+				} else if (/themoviedb\.org\/(movie|tv)\//.test(links[i].href)) {
 					// Grab the tmdb link
 					tmdbLink = links[i].href;
 				}
@@ -1556,13 +1562,15 @@ const letterboxd = {
 			}
 
 			// Third Attempt
-			let buttons = document.querySelectorAll('p.text-link.text-footer div a.micro-button');
+			let buttons = document.querySelectorAll('.text-link.text-footer a.micro-button');
 			let lastButton = buttons[buttons.length - 1];
-			lastButton.after(button);
+			if (lastButton) lastButton.after(button);
+			else document.querySelector('.text-link.text-footer')?.append(button);
 		},
 
 		moveLinks() {
 			const footer = document.querySelector('.text-link.text-footer');
+			if (!footer) return;
 			const buttons = footer.querySelectorAll('.micro-button.track-event');
 
 			if (buttons != null && buttons.length > 0) {
@@ -1599,14 +1607,14 @@ const letterboxd = {
 				// Save the report button
 				if (this.loggedIn) {
 					var report = footer.querySelector('.block-flag-wrapper');
-					report.style['margin-left'] = '5px';
+					if (report) report.style['margin-left'] = '5px';
 				}
 
 				// Clear the footer
 				footer.innerText = "";
 
-				// Readd the report button
-				if (this.loggedIn) {
+				// Readd the report button when the mobile layout includes one.
+				if (report) {
 					footer.prepend(report);
 				}
 
@@ -4698,10 +4706,9 @@ moduleConfigs.forEach(config => {
 	}
 });
 
-letterboxd.storage.init();
-letterboxd.storage.initLocal();
+const ready = Promise.all([letterboxd.storage.init(), letterboxd.storage.initLocal()]);
 
-const observer = new MutationObserver(() => {
+function runForPage() {
 
 	if (window.location.hostname === 'letterboxd.com') {
 		if (window.location.pathname.startsWith('/film/') && 
@@ -4747,6 +4754,8 @@ const observer = new MutationObserver(() => {
 			letterboxd.general.init();
 		}
 	}
-});
+}
 
+const observer = new MutationObserver(runForPage);
 observer.observe(document, { childList: true, subtree: true });
+ready.then(runForPage);

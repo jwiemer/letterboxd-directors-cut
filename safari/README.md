@@ -51,6 +51,16 @@ Bundled styles always load first. The downloaded CSS adds overrides after them. 
 
 Keep this branch available: installed builds use its fixed URL even if the pull request is later merged. Moving the source URL requires another extension build. Everyone who installs this version and enables this option uses the same public stylesheet.
 
+## Mobile ratings and layout fixes (0.2.8)
+
+After installing the updated build, open Director’s Cut settings → **Director’s Cut → Ratings and links access**, tap **Allow ratings and links access**, then reload the film. This requests access for the active core providers; Safari may require allowing those websites in its extension settings too. The script now checks origin match patterns and returns a response on network failure.
+
+The Safari update disables MyAnimeList, AniList, SensCritique, MUBI, Douban, FilmAffinity, Simkl, AlloCiné, Kinopoisk, Filmarks and Does the Dog Die once for existing users and on first install. Other preferences are retained. Users can turn any provider back on afterward; the migration does not repeat. Disabled providers do not request their data or create missing-permission warnings.
+
+Ratings and external links no longer wait for mobile account controls, and changed rating tooltip text no longer stops film initialization. Both footer-link insertion paths handle the mobile markup. The settings width and gallery control fixes are bundled and also included in the shared GitHub stylesheet, so their CSS can reach the previous build without reinstalling. The provider, permission and initialization fixes require the new installation.
+
+For the additional browser regression check, install the existing dependencies in `testing/`, install its Playwright Chromium browser, build Safari, then run `node testing/safari/mobile.browser.mjs` from the repo root. It uses a 393px phone viewport and a local film fixture with a deliberately changed tooltip and delayed account markup. A mocked IMDb response verifies chart rendering; the test also checks footer links, settings overflow and gallery button widths. This fixture does not validate live rating-site responses or iPhone Safari’s permission prompts.
+
 ## Validation before release
 
 The automated package checks verify shipped resources, manifest configuration, version consistency, and image-saving behavior on iPhone, desktop-mode iPad, and desktop. They do not prove that Safari grants permissions, streams YouTube videos, or accepts Letterboxd account actions correctly.

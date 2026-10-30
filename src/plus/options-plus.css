@@ -213,3 +213,35 @@ mark.dc-mark { background: rgba(0, 224, 84, 0.25); color: inherit; border-radius
 	label:not(.radio) { flex: 1; }
 	input[type="text"] { min-width: 0; flex: 1; }
 }
+
+/* Mobile settings: Safari exposes a browser namespace, so upstream classified
+   the popup as Firefox and gave it a 450px minimum width. */
+@media (max-width: 600px) {
+  html:has(body > .topnav) { min-width: 0; width: 100%; }
+  html body:has(> .topnav) {
+    box-sizing: border-box;
+    width: 100% !important; min-width: 0 !important; max-width: 100% !important;
+    padding: 0 12px 32px; margin: 0;
+  }
+  body:has(> .topnav) > div { min-width: 0; max-width: 100%; }
+  body:has(> .topnav) .topnav { margin: 0 -12px; padding: 8px 12px; }
+  body:has(> .topnav) div.subsetting { width: 100%; min-width: 0; padding-left: 10px; }
+  body:has(> .topnav) label:not(.radio) { min-width: 0; overflow-wrap: anywhere; }
+  body:has(> .topnav) select { min-width: 0; max-width: min(160px, 45vw); }
+  body:has(> .topnav) input[type="text"] { width: 100%; min-width: 0; }
+  body:has(> .topnav) input[type="file"] { max-width: 100%; }
+  body:has(> .topnav) #custom-list-holder { width: 100% !important; }
+  body:has(> .topnav) .sortable-list { max-width: 100%; }
+
+  #tmdb-photo-panel { clear: both; margin: 20px 0; }
+  #tmdb-photo-panel .tmdb-panel-header { align-items: center; margin: 0 0 8px; }
+  #tmdb-photo-panel .content-tab-filters { margin: 0; max-width: 100%; overflow-x: auto; }
+  #tmdb-photo-panel .tmdb-set-row { flex-wrap: wrap; gap: 8px; align-items: center; }
+  #tmdb-photo-panel .tmdb-set-row .lb-set { flex: none; width: auto; min-height: 44px; padding: 8px 16px; }
+  #tmdb-photo-panel .tmdb-set-row .tmdb-open-grid { flex: none; width: 44px; height: 44px; }
+  #tmdb-photo-panel .tmdb-set-row .tmdb-lang-select { max-width: calc(100% - 140px); min-height: 44px; }
+  #tmdb-photo-panel .tmdb-set-row .lb-set-status:not(:empty) { flex-basis: 100%; order: 3; }
+  #tmdb-photo-panel .tmdb-carousel.is-poster { width: min(100%, 240px); max-width: 240px; margin-inline: auto; }
+  #tmdb-lightbox .lb-filters { margin: 0; gap: 8px; }
+  #tmdb-lightbox .lb-info .lb-set { width: auto; min-height: 44px; }
+}

@@ -63,6 +63,7 @@
   ],
   "background": {
     "scripts": [
+      "plus/safari-preferences.js",
       "background.js",
       "plus/live-styles-background.js"
     ]

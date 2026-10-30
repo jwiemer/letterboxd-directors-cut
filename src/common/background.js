@@ -65,7 +65,10 @@ browser.runtime.onMessage.addListener((msg, sender, response) => {
                 let resData = (msg.type === "JSON") ? await res.json() : await res.text();
                 response({ response: resData, url: res.url, status: res.status });
 
-            })();
+            })().catch(exception => {
+                console.error("Fetch Exception:", exception);
+                response({ response: null, url: msg.url, status: 0, errors: ["Network request failed"] });
+            });
 
             return true;
 
@@ -242,6 +245,8 @@ async function InitDefaultSettings() {
         if (options[key] == null) options[key] = value;
     }
 
+    // Apply the Safari provider preset once, preserving other saved preferences.
+    if (typeof DCSafariPreferences !== 'undefined') DCSafariPreferences.apply(options);
     // Save
     await browser.storage.sync.set({ options });
 }
@@ -353,7 +358,7 @@ async function CheckForPermission(url) {
     // maybe later I will discover the reason I did it this way
 
     try {
-        return await browser.permissions.contains({ origins: [url] });
+        return await browser.permissions.contains({ origins: [new URL(url).origin + "/*"] });
     }
     catch (exception){
         console.error(`There was an error checking the permissions: ${exception}`);

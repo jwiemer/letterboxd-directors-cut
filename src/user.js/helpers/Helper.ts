@@ -445,9 +445,10 @@ export class Helper {
 			}
 
 			// Third Attempt
-			const buttons = document.querySelectorAll('p.text-link.text-footer div a.micro-button');
+			const buttons = document.querySelectorAll('.text-link.text-footer a.micro-button');
 			const lastButton = buttons[buttons.length - 1];
-			lastButton.after(button);
+			if (lastButton) lastButton.after(button);
+			else document.querySelector('.text-link.text-footer')?.append(button);
 		}
 
 	}
